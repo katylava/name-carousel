@@ -1,0 +1,84 @@
+{
+  "name": "name-carousel",
+  "version": "0.1.0",
+  "homepage": "https://katylava.github.io/name-carousel",
+  "description": "Professor Putterwump's Curious Carousel of Unreturned Names - A Victorian circus-themed name exchange draw application for gift exchanges and secret santa events. Randomly assigns gift recipients while respecting exclusion rules and preventing direct exchanges.",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/katylava/name-carousel.git"
+  },
+  "keywords": [
+    "name-draw",
+    "secret-santa",
+    "gift-exchange",
+    "random-matching",
+    "exclusion-rules",
+    "victorian-theme",
+    "circus-theme"
+  ],
+  "author": "katy lavallee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katylava/name-carousel/issues"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "canvas-confetti": "^1.9.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^4.2.3"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-scripts test",
+    "pretest:e2e": "npm run coverage:clean",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:coverage": "npm run coverage:clean && playwright test --project=chromium && npm run coverage:report",
+    "coverage:clean": "rm -rf .nyc_output coverage",
+    "coverage:report": "nyc report --reporter=text",
+    "coverage:html": "nyc report --reporter=html",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "babel-plugin-istanbul": "^7.0.1",
+    "cypress": "^15.4.0",
+    "gh-pages": "^6.3.0",
+    "nyc": "^17.1.0",
+    "playwright-test-coverage": "^1.2.12",
+    "prettier": "^3.6.2",
+    "react-app-rewired": "^2.2.1"
+  }
+}

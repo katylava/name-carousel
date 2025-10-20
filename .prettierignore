@@ -1,0 +1,20 @@
+# Dependencies
+node_modules
+
+# Build output
+build
+dist
+coverage
+.nyc_output
+
+# Test artifacts
+test-results
+playwright-report
+
+# Misc
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+package-lock.json
