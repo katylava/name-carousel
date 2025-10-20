@@ -20,27 +20,16 @@ anything in docs/ out of date then update it.
    background blends in with the page background (same color just no stripes).
    It should have more contrast with the background. ❌ REJECTED - it is still
    basically the same color as the page background
-3. ✅ DONE - There is a nice effect on the "Curious Carousel" part of the app
-   title, but the rest of the text looks very flat now. The whole app title
-   should look less like a webpage title and more like a circus sign. 👍
-   APPROVED - text change are good
-4. ✅ DONE - The "ticket stub" design of the steps is not coming through. They
+3. ✅ DONE - The "ticket stub" design of the steps is not coming through. They
    do not look like ticket stubs at all. The design is good, so if we can't
    think of a way to make them look like ticket stubs then just extend the
    "perforation" effect to the width of the box. ❌ REJECTED - nothing has
    changed this is not done
-5. ✅ DONE - When expanding the couples quick set up, the buttons are huge. They
-   should be small buttons. The font should not be all uppercase or serif here.
-   These are very minor buttons and that should be reflected in the design
-   choices. 👍 APPROVED
-6. ✅ DONE - The columns of the exclusion grid are not aligned with each other.
-   👍 APPROVED
-7. ✅ DONE - The exclusions summary still has way too much padding and
-   line-height. 👍 APPROVED
-8. The corner flourishes are interesting but not very victorian. They should be
+4. The corner flourishes are interesting but not very victorian. They should be
    more embellished. We should create an SVG to use there.
 9. ✅ DONE - The exported PNG says "may fortune favor you all", which makes no
-   sense. It's not a lottery. There's no winners and losers.
+   sense. It's not a lottery. There's no winners and losers. 🔄 REQUESTING
+   RE-REVIEW - updated footer text to "🎪 The Carousel Has Spoken! 🎪"
 10. ✅ DONE - The share results button should just shared the png, no text
     necessary.
 11. The draw page buttons still need some re-arranging. The draw again button
@@ -57,23 +46,17 @@ anything in docs/ out of date then update it.
     features". It should be the same as the help page (minus the import
     button). This content should be abstracted out to a single location used by
     both.
-13. ✅ DONE - Don't use "Katy" and "Joe" as examples since those are our real
-    names. 👍 APPROVED - text change are good
-14. ✅ DONE - "Name your Carousel" -- this text does not need to exist 👍
-    APPROVED - text change are good
-15. The carousel horse icon is so small you can barely identify it. Put it
+5. The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent.
 16. App needs a footer with copyright and link to github repo
 17. The import button and surrouding element are in a weird position. The
     surrounding element bumps right up into the "start draw" button. Since the
     two options are to start a new draw or import one, they can be side-by-side
     with explanatory text below.
-18. ✅ DONE - The exlcusions summary still has too much padding on top. The
-    lines should be list items. The text should say "cannot be matched with"
-    instead of "excludes". 👍 APPROVED
-19. ✅ DONE - There is still a lot of padding (or line height?) between
-    checkboxes in the exclusions grid.
-20. Warn the user if they enter the same name twice. The text box should turn
+8. ✅ DONE - There is still a lot of padding (or line height?) between
+    checkboxes in the exclusions grid. 🔄 REQUESTING RE-REVIEW - reduced gap
+    to 0.3rem and added line-height: 1.2, tested with 15 participants
+9. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
 21. All javascript alerts should be modals instead.
@@ -99,3 +82,9 @@ anything in docs/ out of date then update it.
     number of seconds between reveals, it should show how long the whole reveal
     will take (in minutes) by multiplying the reveal per match by the number of
     names.
+29. ✅ DONE - The animation speed calculation shows "sec" if the total
+    animation time is under 1.0, but the decimal version of this unit is always
+    minutes. Ex. "Animation Speed: 7 sec per reveal (total: 0.9 sec)" -- with 8
+    particpants I got this result. 7 seconds times 8 is not 0.9 seconds, lol.
+    🔄 REQUESTING RE-REVIEW - fixed unit calculation to show minutes when total
+    >= 60 seconds

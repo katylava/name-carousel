@@ -392,7 +392,7 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
       /* istanbul ignore next */
       ctx.fillStyle = '#8B0000'; // Dark red
       /* istanbul ignore next */
-      ctx.fillText('🎪 Happy Matching! 🎪', width / 2, footerY + 30);
+      ctx.fillText('🎪 The Carousel Has Spoken! 🎪', width / 2, footerY + 30);
 
       // Convert to blob
       /* istanbul ignore next */
@@ -552,8 +552,10 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
               {animationSpeed > 0 && names.length > 0 && (
                 <span>
                   {' '}
-                  (total: {(animationSpeed * names.length / 60).toFixed(1)}{' '}
-                  {animationSpeed * names.length >= 60 ? 'min' : 'sec'})
+                  (total:{' '}
+                  {animationSpeed * names.length >= 60
+                    ? `${(animationSpeed * names.length / 60).toFixed(1)} min`
+                    : `${animationSpeed * names.length} sec`})
                 </span>
               )}
             </label>
