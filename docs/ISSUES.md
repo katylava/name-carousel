@@ -71,8 +71,8 @@ anything in docs/ out of date then update it.
 18. ✅ DONE - The exlcusions summary still has too much padding on top. The
     lines should be list items. The text should say "cannot be matched with"
     instead of "excludes". 👍 APPROVED
-19. There is still a lot of padding (or line height?) between checkboxes in the
-    exclusions grid.
+19. ✅ DONE - There is still a lot of padding (or line height?) between
+    checkboxes in the exclusions grid.
 20. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
