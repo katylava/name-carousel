@@ -1023,16 +1023,16 @@ button:active {
 .exclusion-checkboxes {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  gap: 0.15rem;
   flex: 1;
-  line-height: 1.2;
+  line-height: 1.0;
 }
 
 .exclusion-checkbox {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
+  padding: 0.15rem 0.3rem;
   border-radius: 4px;
   transition: background-color 0.2s ease;
   font-size: 0.9rem;
