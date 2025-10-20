@@ -9,7 +9,10 @@ chrome browser tests only. We will test other browsers once I am happy with the
 functionality in Chrome. If you want to use `istanbul ignore` on anything you
 must ask for permission. All statements to ignore coverage should have a comment
 explaining why. For issues that are bugs, new tests should be created in
-tests/regression.spec.js.
+tests/regression.spec.js. Always commit your changes when completing an issue.
+Use the browser at http://localhost:3000/ to view the app. Keep this file up to
+date to mark what is done. If you change anything that makes CLAUDE.md or
+anything in docs/ out of date then update it.
 
 1. ✅ DONE - The help modal icon covers up part of the app title ❌ REJECTED -
    it is now in the page margin
@@ -36,9 +39,10 @@ tests/regression.spec.js.
    line-height. 👍 APPROVED
 8. The corner flourishes are interesting but not very victorian. They should be
    more embellished. We should create an SVG to use there.
-9. The exported PNG says "may fortune favor you all", which makes no sense. It's
-   not a lottery. There's no winners and losers.
-10. The share results button should just shared the png, no text necessary.
+9. ✅ DONE - The exported PNG says "may fortune favor you all", which makes no
+   sense. It's not a lottery. There's no winners and losers.
+10. ✅ DONE - The share results button should just shared the png, no text
+    necessary.
 11. The draw page buttons still need some re-arranging. The draw again button
     should be the second row, and it should be the same width as the first row
     buttons together -- its left side should line up with the left side of the
@@ -49,9 +53,10 @@ tests/regression.spec.js.
     That text should not be very large. It should be centered. This will
     indicate to the user that all three of these buttons will trigger a
     download.
-12. Like the welcom page, the help dialogue does not need "key features". It
-    should be the same as the help page (minus the import button). This content
-    should be abstracted out to a single location used by both.
+12. ✅ DONE - Like the welcom page, the help dialogue does not need "key
+    features". It should be the same as the help page (minus the import
+    button). This content should be abstracted out to a single location used by
+    both.
 13. ✅ DONE - Don't use "Katy" and "Joe" as examples since those are our real
     names. 👍 APPROVED - text change are good
 14. ✅ DONE - "Name your Carousel" -- this text does not need to exist 👍
@@ -75,11 +80,11 @@ tests/regression.spec.js.
 22. Since "start over" is a destructive action, we should ask the user for
     confirmation in a modal. We should explain that they will lose the data they
     have entered.
-23. The quick setup couples box is not obviously clickable. There should be an
-    arrow or something to indicate it is expandable.
-24. On the draw page we have the text "Results for [draw name]"... this text
-    does not need to exist. The draw name is already on the page and these are
-    obviously the results.
+23. ✅ DONE - The quick setup couples box is not obviously clickable. There
+    should be an arrow or something to indicate it is expandable.
+24. ✅ DONE - On the draw page we have the text "Results for [draw name]"...
+    this text does not need to exist. The draw name is already on the page and
+    these are obviously the results.
 25. The draw name does not appear step 2, but it is on step 1 and 3. However it
     is formatted differently on step 3. It should be on all steps and be
     formatted the same on all of them.
@@ -90,6 +95,7 @@ tests/regression.spec.js.
     shown in the count (the "N couples configured" text), but when you expand it
     the rows of form fields for those couples are not displayed, so cannot be
     removed.
-28. As you select the draw animation speed, in addition to showing the number of
-    seconds between reveals, it should show how long the whole reveal will take
-    (in minutes) by multiplying the reveal per match by the number of names.
+28. ✅ DONE - As you select the draw animation speed, in addition to showing the
+    number of seconds between reveals, it should show how long the whole reveal
+    will take (in minutes) by multiplying the reveal per match by the number of
+    names.

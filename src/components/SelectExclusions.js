@@ -106,6 +106,9 @@ export function SelectExclusions({
           style={{ cursor: 'pointer' }}
         >
           <h3>
+            <span className="expand-arrow">
+              {couplesExpanded ? '▼' : '►'}
+            </span>{' '}
             Quick Setup: Couples
             {!couplesExpanded && (
               <span className="couples-count">

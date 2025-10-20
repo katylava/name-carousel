@@ -392,7 +392,7 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
       /* istanbul ignore next */
       ctx.fillStyle = '#8B0000'; // Dark red
       /* istanbul ignore next */
-      ctx.fillText('May Fortune Favor You All! 🎪', width / 2, footerY + 30);
+      ctx.fillText('🎪 Happy Matching! 🎪', width / 2, footerY + 30);
 
       // Convert to blob
       /* istanbul ignore next */
@@ -440,8 +440,6 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
     ) {
       try {
         await navigator.share({
-          title: drawName,
-          text: 'Check out our name draw results!',
           files: [file],
         });
       } catch (error) {
@@ -551,6 +549,13 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
           <div className="animation-control">
             <label htmlFor="animation-speed">
               Animation Speed: <strong>{animationSpeed} sec</strong> per reveal
+              {animationSpeed > 0 && names.length > 0 && (
+                <span>
+                  {' '}
+                  (total: {(animationSpeed * names.length / 60).toFixed(1)}{' '}
+                  {animationSpeed * names.length >= 60 ? 'min' : 'sec'})
+                </span>
+              )}
             </label>
             <input
               type="range"
@@ -581,7 +586,6 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
         </div>
       ) : (
         <div className="results-section">
-          <h3>Results for {drawName}:</h3>
           {isAnimating && (
             <p className="animation-status">
               Revealing {visibleResults.length} of {results.length} results...

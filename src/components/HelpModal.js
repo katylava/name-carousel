@@ -57,32 +57,6 @@ export function HelpModal({ isOpen, onClose }) {
             </ol>
           </div>
 
-          <div className="modal-section">
-            <h3>Key Features:</h3>
-            <ul>
-              <li>
-                <strong>Quick Setup for Couples:</strong> Easily exclude
-                partners from matching with each other
-              </li>
-              <li>
-                <strong>Import Previous Draws:</strong> Upload last year's
-                results to automatically prevent repeat matches
-              </li>
-              <li>
-                <strong>Export for Next Year:</strong> Save your draw to
-                re-import next time
-              </li>
-              <li>
-                <strong>Customizable Animation:</strong> Control the speed of
-                the reveal or show results instantly
-              </li>
-              <li>
-                <strong>Share Results:</strong> Export as PNG or share directly
-                via mobile sharing
-              </li>
-            </ul>
-          </div>
-
           <div className="modal-note">
             <p>
               <strong>Note:</strong> Your draw is saved locally in your browser.
