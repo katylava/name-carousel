@@ -20,16 +20,18 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    REQUESTING RE-REVIEW - replaced ✦ character with ornate Victorian SVG
    featuring swirling curves, decorative dots, and flourish elements (120x120px,
    embedded as CSS data URI)
-5. The draw page buttons still need some re-arranging. The draw again button
-    should be the second row, and it should be the same width as the first row
-    buttons together -- its left side should line up with the left side of the
-    copy button and its right side should line up with the right side of the
-    share button. There should be a horizontal separator (with some flourish
-    design) before the remaining row of buttons. Between the separator and the
-    last row of buttons, there should be some text saying "download results:".
-    That text should not be very large. It should be centered. This will
-    indicate to the user that all three of these buttons will trigger a
-    download.
+5. ✅ DONE - The draw page buttons still need some re-arranging. The draw again
+    button should be the second row, and it should be the same width as the
+    first row buttons together -- its left side should line up with the left
+    side of the copy button and its right side should line up with the right
+    side of the share button. There should be a horizontal separator (with some
+    flourish design) before the remaining row of buttons. Between the separator
+    and the last row of buttons, there should be some text saying "download
+    results:". That text should not be very large. It should be centered. This
+    will indicate to the user that all three of these buttons will trigger a
+    download. 🔄 REQUESTING RE-REVIEW - reorganized layout: Row 1 (Copy+Share
+    side-by-side), Row 2 (Draw Again full-width), separator (◆ ◆ ◆), label
+    ("download results:"), Row 3 (Export+PNG+File)
 6. The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent.
 7. The import button and surrouding element are in a weird position. The
