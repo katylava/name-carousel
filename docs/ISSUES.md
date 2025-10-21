@@ -15,8 +15,11 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    "perforation" effect to the width of the box. 🔄 REQUESTING RE-REVIEW -
    extended perforation effect from 30% width to full width (left: 0, right:
    0) across all step boxes
-4. The corner flourishes are interesting but not very victorian. They should be
-   more embellished. We should create an SVG to use there.
+4. ✅ DONE - The corner flourishes are interesting but not very victorian. They
+   should be more embellished. We should create an SVG to use there. 🔄
+   REQUESTING RE-REVIEW - replaced ✦ character with ornate Victorian SVG
+   featuring swirling curves, decorative dots, and flourish elements (120x120px,
+   embedded as CSS data URI)
 5. The draw page buttons still need some re-arranging. The draw again button
     should be the second row, and it should be the same width as the first row
     buttons together -- its left side should line up with the left side of the
