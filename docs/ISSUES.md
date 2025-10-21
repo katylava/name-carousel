@@ -1,18 +1,5 @@
-INSTRUCTIONS: When completing issues be sure to update related tests before you
-begin. Add new tests when adding functionality, using TDD. Remember that tests
-should be part of user journeys -- unless a test absolutely requires a clean
-slate, then make assertions in an existing test instead. Run only the related
-tests as you complete each item, without coverage. Before prompting the user
-again, run the whole test suite with coverage. If you are only making CSS
-changes then you do not need to do anything with tests. Limit test suite runs to
-chrome browser tests only. We will test other browsers once I am happy with the
-functionality in Chrome. If you want to use `istanbul ignore` on anything you
-must ask for permission. All statements to ignore coverage should have a comment
-explaining why. For issues that are bugs, new tests should be created in
-tests/regression.spec.js. Always commit your changes when completing an issue.
-Use the browser at http://localhost:3000/ to view the app. Keep this file up to
-date to mark what is done. If you change anything that makes CLAUDE.md or
-anything in docs/ out of date then update it.
+INSTRUCTIONS: Use the `tdd-issues` skill to work through these issues.
+See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
 
 1. ✅ DONE - The help modal icon covers up part of the app title ❌ REJECTED -
    it is now in the page margin
