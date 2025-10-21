@@ -216,9 +216,8 @@ header {
 /* Help Button */
 .help-button {
   position: absolute;
-  top: 50%;
-  left: -60px;
-  transform: translateY(-50%);
+  top: 20px;
+  left: 20px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -237,13 +236,13 @@ header {
 }
 
 .help-button:hover {
-  transform: translateY(-50%) scale(1.1);
+  transform: scale(1.1);
   box-shadow: var(--shadow-lg);
   border-color: var(--circus-gold);
 }
 
 .help-button:active {
-  transform: translateY(-50%) scale(0.95);
+  transform: scale(0.95);
 }
 
 /* Decorative circus tent stripe at top */
@@ -1941,7 +1940,5 @@ button:active {
     width: 40px;
     height: 40px;
     font-size: 1.25rem;
-    top: 15px;
-    left: 15px;
   }
 }
