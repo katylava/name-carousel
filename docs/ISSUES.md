@@ -28,8 +28,10 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    RE-REVIEW - replaced simple L-shaped CSS border corners with ornate Victorian
    SVG flourishes featuring swirling curves and decorative dots on all sections
    (draw-section, results-section, couples-section, exclusions-grid)
-6. The carousel horse icon is so small you can barely identify it. Put it
-    somewhere else on the sign where it can be more prominent.
+6. ✅ DONE - The carousel horse icon is so small you can barely identify it. Put it
+    somewhere else on the sign where it can be more prominent. 🔄 REQUESTING
+    RE-REVIEW - separated icon from title text and positioned prominently on
+    left side of header at 4rem (64px) size, easily identifiable with drop shadow
 7. The import button and surrouding element are in a weird position. The
     surrounding element bumps right up into the "start draw" button. Since the
     two options are to start a new draw or import one, they can be side-by-side
