@@ -5,7 +5,10 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    REQUESTING RE-REVIEW - moved to top-left corner inside header box (left:
    20px, top: 20px), balancing circus emojis in top-right ❌ REJECTED - now it
    covers up part of the title. just find a better place for it. why does it
-   need to be anywhere near the top left???
+   need to be anywhere near the top left??? 🔄 REQUESTING RE-REVIEW - moved to
+   bottom-right corner (position: fixed; bottom: 20px; right: 20px), no longer
+   overlaps title, remains accessible when scrolling, follows common UX pattern
+   for help buttons
 2. ✅ DONE - The app title still doesn't look much like a sign since its
    background blends in with the page background (same color just no stripes).
    It should have more contrast with the background. 🔄 REQUESTING RE-REVIEW -
