@@ -20,21 +20,21 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    related to this anywhere. the old corner flourishes are still there. i don't
    what you mean when you talk about the ✦ character, as that is not used in
    the corners. the corner flourishes are all CSS border effects.
-3. The carousel horse icon is so small you can barely identify it. Put it
+6. The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent.
-4. The import button and surrouding element are in a weird position. The
+7. The import button and surrouding element are in a weird position. The
     surrounding element bumps right up into the "start draw" button. Since the
     two options are to start a new draw or import one, they can be side-by-side
     with explanatory text below.
-5. Warn the user if they enter the same name twice. The text box should turn
+8. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
-6. IN the apply couple UI, if you hit apply couple twice, the second time it removes
+9. IN the apply couple UI, if you hit apply couple twice, the second time it removes
     them. seems like we don't really need so many buttons then. we can replace
     apply couple with remove after they are applied.
-7. In apply couple UI... when restored from localStorage, configured couples are
+10. In apply couple UI... when restored from localStorage, configured couples are
     shown in the count (the "N couples configured" text), but when you expand it
     the rows of form fields for those couples are not displayed, so cannot be
     removed.
-8. Start over modal buttons have low contrast, can't read text well. Use
+11. Start over modal buttons have low contrast, can't read text well. Use
     colors we use on other buttons.
