@@ -24,7 +24,10 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    embedded as CSS data URI) ❌ REJECTED i don't even see any difference
    related to this anywhere. the old corner flourishes are still there. i don't
    what you mean when you talk about the ✦ character, as that is not used in
-   the corners. the corner flourishes are all CSS border effects.
+   the corners. the corner flourishes are all CSS border effects. 🔄 REQUESTING
+   RE-REVIEW - replaced simple L-shaped CSS border corners with ornate Victorian
+   SVG flourishes featuring swirling curves and decorative dots on all sections
+   (draw-section, results-section, couples-section, exclusions-grid)
 6. The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent.
 7. The import button and surrouding element are in a weird position. The
