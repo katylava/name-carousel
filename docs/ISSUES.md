@@ -6,8 +6,9 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    20px, top: 20px), balancing circus emojis in top-right
 2. ✅ DONE - The app title still doesn't look much like a sign since its
    background blends in with the page background (same color just no stripes).
-   It should have more contrast with the background. ❌ REJECTED - it is still
-   basically the same color as the page background
+   It should have more contrast with the background. 🔄 REQUESTING RE-REVIEW -
+   changed header gradient to warmer tan tones (#f5e6d3 to #ead5bd) for better
+   contrast against cream page background
 3. ✅ DONE - The "ticket stub" design of the steps is not coming through. They
    do not look like ticket stubs at all. The design is good, so if we can't
    think of a way to make them look like ticket stubs then just extend the
