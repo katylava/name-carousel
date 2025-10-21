@@ -1815,6 +1815,33 @@ button:active {
   color: var(--teal-performer);
 }
 
+/* Footer Styles */
+.app-footer {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  margin-top: var(--spacing-2xl);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  border-top: var(--border-width-thin) solid rgba(139, 0, 0, 0.2);
+}
+
+.app-footer p {
+  margin: 0;
+}
+
+.app-footer a {
+  color: var(--circus-crimson);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.app-footer a:hover {
+  color: var(--circus-gold);
+  text-decoration: underline;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

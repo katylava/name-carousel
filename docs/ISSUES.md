@@ -39,7 +39,7 @@ anything in docs/ out of date then update it.
     download.
 6. The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent.
-7. App needs a footer with copyright and link to github repo
+7. ✅ DONE - App needs a footer with copyright and link to github repo
 8. The import button and surrouding element are in a weird position. The
     surrounding element bumps right up into the "start draw" button. Since the
     two options are to start a new draw or import one, they can be side-by-side
@@ -57,9 +57,7 @@ anything in docs/ out of date then update it.
     have entered.
 13. ✅ DONE - The draw name does not appear step 2, but it is on step 1 and 3.
     However it is formatted differently on step 3. It should be on all steps
-    and be formatted the same on all of them. 🔄 REQUESTING RE-REVIEW - added
-    draw name to step 2 and made format consistent across all steps (h3 with
-    edit icon)
+    and be formatted the same on all of them.
 14. apply couple UI. if you hit apply couple twice, the second time it removes
     them. seems like we don't really need so many buttons then. we can replace
     apply couple with remove after they are applied.

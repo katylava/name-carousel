@@ -26,6 +26,18 @@ function App() {
       <main>
         <Steps />
       </main>
+      <footer className="app-footer">
+        <p>
+          © {new Date().getFullYear()} |{' '}
+          <a
+            href="https://github.com/katylava/name-carousel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on GitHub
+          </a>
+        </p>
+      </footer>
       <HelpModal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </div>
   );
