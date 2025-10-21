@@ -37,6 +37,7 @@ Before starting ANY issue:
    - Read docs/ISSUES.md
    - Delete any issues marked 👍 APPROVED from the file
    - Commit the cleanup if changes made
+   - **DO NOT** re-number the list
 
 3. **Identify next issue**:
    - Find first issue that needs work:

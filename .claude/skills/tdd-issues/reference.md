@@ -25,9 +25,9 @@ EOF
 - Commit message should accurately reflect the changes and their purpose
 
 **Examples:**
-- `Fix issue 10: Warn user when duplicate names entered`
-- `Fix issue 4: Add Victorian-style SVG corner flourishes`
-- `Fix issue 1: Move help icon to page margin`
+- `Warn user when duplicate names entered`
+- `Add Victorian-style SVG corner flourishes`
+- `Move help icon to page margin`
 
 ## Issue Management
 
@@ -72,6 +72,7 @@ EOF
 ```
 
 Note: Issue 2 was deleted because it was APPROVED (done during pre-flight).
+Note: Issues 3 and 4 kept their original numbers
 
 ## Test Organization
 
@@ -85,7 +86,6 @@ Place in `tests/regression.spec.js`:
 Add to appropriate existing test file or create new file:
 - `tests/happy-path.spec.js` - Main user journeys
 - `tests/edge-cases.spec.js` - Edge cases, error conditions, accessibility
-- Create new file only if feature doesn't fit existing tests
 
 ### Test Isolation
 Per CLAUDE.md: "Test isolation is not always important"
@@ -96,7 +96,7 @@ Per CLAUDE.md: "Test isolation is not always important"
 ### Test Naming Convention
 - Use descriptive test names that explain the user journey
 - Include "why" not just "what": `test('warns user when entering duplicate name to prevent confusion', ...)`
-- Reference issue number in test if applicable
+- Do not reference issue number in test
 
 ## Coverage Requirements
 

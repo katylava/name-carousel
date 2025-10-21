@@ -3,7 +3,9 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
 
 8. ✅ DONE - Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
-    duplicate name). The error message should appear above the text box.
+    duplicate name). The error message should appear above the text box. ❌
+    REJECTED - the error should not be triggered until the user hits enter to
+    go to the next line!
 9. IN the apply couple UI, if you hit apply couple twice, the second time it removes
     them. seems like we don't really need so many buttons then. we can replace
     apply couple with remove after they are applied.
@@ -15,3 +17,12 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     colors we use on other buttons.
 12. The PNG does not display the results in carousel order like the web page
     does.
+13. MAJOR BUG: I got results like this:
+    alice → charlie
+    bob → dana
+    charlie → evan
+    dana → bob
+    evan → fran
+    fran → alice
+    --
+    Notice bob->dana and dana->bob. This is strictly not allowed to happen!
