@@ -44,13 +44,15 @@ EOF
 **For new issues (not previously marked):**
 - Add `✅ DONE` to the issue line
 - Do NOT add 👍 APPROVED (only user can approve)
+- DO NOT DELETE THE ISSUE
 
 **For rejected issues being fixed:**
 - Remove `❌ REJECTED`
 - Add `🔄 REQUESTING RE-REVIEW`
 - Keep `✅ DONE`
+- DO NOT DELETE THE ISSUE
 
-**For approved issues:**
+**For approved issues (issues marked APPROVED by user):**
 - Delete the entire issue from ISSUES.md
 - This should be done during pre-flight checks
 
@@ -73,6 +75,7 @@ EOF
 
 Note: Issue 2 was deleted because it was APPROVED (done during pre-flight).
 Note: Issues 3 and 4 kept their original numbers
+Note: Issues 1 and 3 were NOT deleted
 
 ## Test Organization
 

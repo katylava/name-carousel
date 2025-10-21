@@ -97,6 +97,8 @@ CSS-only = changes ONLY to .css files, no .js/.jsx changes
 - ❌ Continue if coverage drops below 100%
 - ❌ Continue if any test fails unexpectedly
 - ❌ Skip pre-flight checks when starting new issue
+- ❌ Delete issue that is **NOT** marked APPROVED or 👍 APPROVED
+- ❌ Delete issue immediately after completing it
 
 ### ALWAYS:
 - ✅ Write test FIRST (except CSS-only changes)
