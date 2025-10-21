@@ -376,7 +376,7 @@ test.describe('Happy Path - Complete Draw Flow', () => {
     await expect(coupleRowsCheck).toHaveCount(3);
     await coupleRowsCheck
       .first()
-      .getByRole('button', { name: /delete couple/i })
+      .locator('.delete-couple-icon')
       .click();
     await expect(coupleRowsCheck).toHaveCount(2);
 

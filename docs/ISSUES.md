@@ -1,30 +1,22 @@
 INSTRUCTIONS: Use the `tdd-issues` skill to work through these issues.
 See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
 
-8. ✅ DONE - Warn the user if they enter the same name twice. The text box should turn
-    pink with a red border indicating error (after they press enter on a
-    duplicate name). The error message should appear above the text box.
 9. ✅ DONE - In the apply couple UI, if you hit apply couple twice, the second time it removes
     them. seems like we don't really need so many buttons then. we can replace
-    apply couple with remove after they are applied.
-10. ✅ DONE - In apply couple UI... when restored from localStorage, configured couples are
-    shown in the count (the "N couples configured" text), but when you expand it
-    the rows of form fields for those couples are not displayed, so cannot be
-    removed.
-11. ✅ DONE - Start over modal buttons have low contrast, can't read text well. Use
-    colors we use on other buttons.
-12. ✅ DONE - The PNG does not display the results in carousel order like the web page
-    does.
-13. ✅ DONE - MAJOR BUG: I got results like this:
-    alice → charlie
-    bob → dana
-    charlie → evan
-    dana → bob
-    evan → fran
-    fran → alice
-    --
-    Notice bob->dana and dana->bob. This is strictly not allowed to happen!
+    apply couple with remove after they are applied. ❌ REJECTED there are
+    still two buttons for each couple row. i think the one labeled "x" is there
+    so you can remove a row without first clicking "Apply Couple". instead
+    let's change the original issue. Let's have a trash can icon for the remove
+    action (NOT a button, just a small icon). The apply couple button will
+    exist after you click "Add Couple" or "Add Another Couple". After you click
+    "Apply Couple" that button can disappear. The trash can icon action can
+    always be present for each row.
 14. ✅ DONE - Disable the Next button on step 1 (Enter Names) if fewer than 3 names have
     been entered. This will prevent impossible draw scenarios. Note: We need a
     way to bypass this restriction in the test environment since we have a test
     that uses 2 participants to verify bidirectional assignment prevention.
+    ❌ REJECTED - the button is disabled but does not appear disabled to the
+    user. just makes teh site look broken. the button UI should indicate it is
+    disabled and next to the button (when disabled) it should say "enter at
+    least 3 names to continue).
+15. When you remove a couple after applying, the exclusions aren't removed.

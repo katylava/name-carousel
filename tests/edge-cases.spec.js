@@ -515,11 +515,15 @@ test.describe('Edge Cases and Error Conditions', () => {
     await expect(firstRow.locator('.couple-person-1')).toHaveValue('Alice');
     await expect(firstRow.locator('.couple-person-2')).toHaveValue('Bob');
 
-    // Verify the couple has applied state preserved
-    await expect(firstRow.getByRole('button', { name: /^remove$/i })).toBeVisible();
+    // Verify the couple has applied state preserved (Apply button should be hidden)
+    await expect(firstRow.getByRole('button', { name: /^apply couple$/i })).not.toBeVisible();
 
-    // Verify we can remove the couple (toggles exclusions off)
-    await firstRow.getByRole('button', { name: /^remove$/i }).click();
+    // Verify trash icon is visible
+    const trashIcon = firstRow.locator('.delete-couple-icon');
+    await expect(trashIcon).toBeVisible();
+
+    // Delete the couple - this will remove exclusions since it was applied
+    await trashIcon.click();
     const exclusionsAfterRemove = await page.evaluate(() =>
       JSON.parse(localStorage.getItem('exclusions') || '{}')
     );
@@ -971,7 +975,7 @@ test.describe('Edge Cases and Error Conditions', () => {
     await expect(firstCoupleDropdown).toHaveValue('Charlie');
 
     // Delete the second couple (which is unapplied) to test handleDeleteCouple with unapplied couple
-    await coupleRows.last().getByRole('button', { name: 'Delete couple' }).click();
+    await coupleRows.last().locator('.delete-couple-icon').click();
     await expect(coupleRows).toHaveCount(1);
   });
 
@@ -1005,98 +1009,133 @@ test.describe('Edge Cases and Error Conditions', () => {
     expect(Object.keys(exclusionsAfter).length).toBe(0);
   });
 
-  test('apply couple button changes to remove after applying', async ({ page }) => {
+  test('couple row has trash can icon and Apply button disappears after applying', async ({ page }) => {
     await page.getByRole('button', { name: /start draw/i }).click();
-    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie');
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie\nDavid');
     await page.getByRole('button', { name: /next/i }).click();
 
     // Expand couples section
     await page.getByText(/quick setup.*couples/i).click();
 
-    // Add couple and select both people
+    // Add couple
     await page.getByRole('button', { name: /add couple/i }).click();
     await page.selectOption('.couple-person-1', 'Alice');
     await page.selectOption('.couple-person-2', 'Bob');
 
-    // Initially should show "Apply Couple" button
     const coupleRow = page.locator('.couple-row').first();
-    await expect(coupleRow.getByRole('button', { name: /^apply couple$/i })).toBeVisible();
 
-    // Should not have the exclusion removal "Remove" button initially (Delete couple button is separate)
-    await expect(coupleRow.getByRole('button', { name: /^remove$/i })).not.toBeVisible();
+    // Trash can icon should always be visible (not a button, just an icon)
+    const trashIcon = coupleRow.locator('.delete-couple-icon');
+    await expect(trashIcon).toBeVisible();
+    // Should not be a button element
+    await expect(coupleRow.locator('button.delete-couple-icon')).not.toBeVisible();
+
+    // "Apply Couple" button should be visible initially
+    await expect(coupleRow.getByRole('button', { name: /^apply couple$/i })).toBeVisible();
 
     // Apply the couple
     await coupleRow.getByRole('button', { name: /^apply couple$/i }).click();
 
     // Verify exclusions were created
-    const exclusions = await page.evaluate(() =>
+    let exclusions = await page.evaluate(() =>
       JSON.parse(localStorage.getItem('exclusions') || '{}')
     );
     expect(exclusions['Alice']).toContain('Bob');
     expect(exclusions['Bob']).toContain('Alice');
 
-    // Button should now show "Remove" instead of "Apply Couple"
+    // "Apply Couple" button should disappear after applying
     await expect(coupleRow.getByRole('button', { name: /^apply couple$/i })).not.toBeVisible();
-    await expect(coupleRow.getByRole('button', { name: /^remove$/i })).toBeVisible();
 
-    // Click remove button - should remove exclusions
-    await coupleRow.getByRole('button', { name: /^remove$/i }).click();
+    // Trash can icon should still be visible
+    await expect(trashIcon).toBeVisible();
 
-    // Verify exclusions were removed
-    const exclusionsAfter = await page.evaluate(() =>
+    // Clicking trash can should delete the row and remove exclusions
+    await trashIcon.click();
+
+    // Row should be gone
+    await expect(coupleRow).not.toBeVisible();
+
+    // Exclusions should be removed (because the couple was applied and then deleted)
+    exclusions = await page.evaluate(() =>
       JSON.parse(localStorage.getItem('exclusions') || '{}')
     );
-    expect(exclusionsAfter['Alice'] || []).not.toContain('Bob');
-    expect(exclusionsAfter['Bob'] || []).not.toContain('Alice');
+    expect(exclusions['Alice'] || []).not.toContain('Bob');
+    expect(exclusions['Bob'] || []).not.toContain('Alice');
 
-    // Button should change back to "Apply Couple"
-    await expect(coupleRow.getByRole('button', { name: /^apply couple$/i })).toBeVisible();
-    await expect(coupleRow.getByRole('button', { name: /^remove$/i })).not.toBeVisible();
+    // Add another couple to test deleting unapplied couple
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await page.selectOption('.couple-person-1', 'Charlie');
+    await page.selectOption('.couple-person-2', 'David');
 
-    // Test with multiple couples to cover map branches
+    const newCoupleRow = page.locator('.couple-row').first();
+    const newTrashIcon = newCoupleRow.locator('.delete-couple-icon');
+
+    // Don't apply this couple, just delete it
+    await newTrashIcon.click();
+
+    // Row should be gone
+    await expect(newCoupleRow).not.toBeVisible();
+
+    // Test keyboard accessibility - add another couple
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await page.selectOption('.couple-person-1', 'Charlie');
+    await page.selectOption('.couple-person-2', 'David');
+
+    const keyboardTestRow = page.locator('.couple-row').first();
+    const keyboardTestIcon = keyboardTestRow.locator('.delete-couple-icon');
+
+    // Focus the trash icon and press Enter
+    await keyboardTestIcon.focus();
+    await keyboardTestIcon.press('Enter');
+
+    // Row should be gone
+    await expect(keyboardTestRow).not.toBeVisible();
+
+    // Add one more to test Space key
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await page.selectOption('.couple-person-1', 'Alice');
+    await page.selectOption('.couple-person-2', 'Bob');
+
+    const spaceKeyTestRow = page.locator('.couple-row').first();
+    const spaceKeyTestIcon = spaceKeyTestRow.locator('.delete-couple-icon');
+
+    // Focus the trash icon and press Space
+    await spaceKeyTestIcon.focus();
+    await spaceKeyTestIcon.press('Space');
+
+    // Row should be gone
+    await expect(spaceKeyTestRow).not.toBeVisible();
+
+    // Test with multiple couples to cover map branches in handleApplyCouple
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await page.selectOption('.couple-person-1', 'Alice');
+    await page.selectOption('.couple-person-2', 'Bob');
+
     await page.getByRole('button', { name: /add another couple/i }).click();
-    const secondCoupleRow = page.locator('.couple-row').nth(1);
-    await secondCoupleRow.locator('.couple-person-1').selectOption('Charlie');
-    await secondCoupleRow.locator('.couple-person-2').selectOption('Alice');
+    const secondRow = page.locator('.couple-row').nth(1);
+    await secondRow.locator('.couple-person-1').selectOption('Charlie');
+    await secondRow.locator('.couple-person-2').selectOption('David');
 
-    // Apply first couple
-    await coupleRow.getByRole('button', { name: /^apply couple$/i }).click();
+    // Apply the second couple (tests map with i !== index for first couple)
+    await secondRow.getByRole('button', { name: /^apply couple$/i }).click();
 
-    // Verify couple count is 1
-    let coupleCount = await page.evaluate(() =>
-      parseInt(localStorage.getItem('appliedCouplesCount') || '0', 10)
+    // Verify second couple was applied
+    let exclusions2 = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('exclusions') || '{}')
     );
-    expect(coupleCount).toBe(1);
+    expect(exclusions2['Charlie']).toContain('David');
+    expect(exclusions2['David']).toContain('Charlie');
 
-    // Apply second couple (tests map with mixed applied states)
-    await secondCoupleRow.getByRole('button', { name: /^apply couple$/i }).click();
+    // First couple should still have the Apply button visible
+    const firstCoupleRow = page.locator('.couple-row').first();
+    await expect(firstCoupleRow.getByRole('button', { name: /^apply couple$/i })).toBeVisible();
 
-    // Verify couple count is 2
-    coupleCount = await page.evaluate(() =>
-      parseInt(localStorage.getItem('appliedCouplesCount') || '0', 10)
-    );
-    expect(coupleCount).toBe(2);
-
-    // Remove first couple (tests map with one applied, one not)
-    await coupleRow.getByRole('button', { name: /^remove$/i }).click();
-
-    // Verify couple count is 1
-    coupleCount = await page.evaluate(() =>
-      parseInt(localStorage.getItem('appliedCouplesCount') || '0', 10)
-    );
-    expect(coupleCount).toBe(1);
-
-    // Delete the second applied couple
-    await secondCoupleRow.getByRole('button', { name: /delete couple/i }).click();
-
-    // Verify couple count is decremented back to 0
-    coupleCount = await page.evaluate(() =>
-      parseInt(localStorage.getItem('appliedCouplesCount') || '0', 10)
-    );
-    expect(coupleCount).toBe(0);
-
-    // Verify only first couple row remains
-    await expect(page.locator('.couple-row')).toHaveCount(1);
+    // Test other keys don't trigger deletion (covers else branch)
+    const testIcon = firstCoupleRow.locator('.delete-couple-icon');
+    await testIcon.focus();
+    await testIcon.press('a'); // Random key that shouldn't trigger deletion
+    // Row should still be visible
+    await expect(firstCoupleRow).toBeVisible();
   });
 
   test('NotificationModal can be closed via backdrop click and close button', async ({ page }) => {
