@@ -202,12 +202,20 @@ export function Steps() {
           <button onClick={handlePrevious}>&larr; Previous</button>
         )}
         {steps[currentStep].buttonText && (
-          <button
-            onClick={handleNext}
-            disabled={currentStep === 0 && names.length < 3}
-          >
-            {steps[currentStep].buttonText} &rarr;
-          </button>
+          <>
+            <button
+              onClick={handleNext}
+              disabled={currentStep === 0 && names.length < 3}
+              className={currentStep === 0 && names.length < 3 ? 'disabled' : ''}
+            >
+              {steps[currentStep].buttonText} &rarr;
+            </button>
+            {currentStep === 0 && names.length < 3 && (
+              <span className="next-button-disabled-message">
+                (enter at least 3 names to continue)
+              </span>
+            )}
+          </>
         )}
         <button onClick={handleStartOver} className="start-over-button">
           Start Over

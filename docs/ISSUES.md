@@ -10,7 +10,10 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     action (NOT a button, just a small icon). The apply couple button will
     exist after you click "Add Couple" or "Add Another Couple". After you click
     "Apply Couple" that button can disappear. The trash can icon action can
-    always be present for each row.
+    always be present for each row. ✅ DONE - Replaced delete button with trash
+    can icon (🗑️) that is always visible. Apply Couple button now disappears
+    after applying. Trash icon deletes row and removes exclusions if applied.
+    Includes keyboard accessibility (Enter/Space keys).
 14. ✅ DONE - Disable the Next button on step 1 (Enter Names) if fewer than 3 names have
     been entered. This will prevent impossible draw scenarios. Note: We need a
     way to bypass this restriction in the test environment since we have a test

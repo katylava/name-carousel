@@ -151,21 +151,31 @@ test.describe('Edge Cases and Error Conditions', () => {
     await page.getByRole('button', { name: /start draw/i }).click();
 
     const nextButton = page.getByRole('button', { name: /next/i });
+    const disabledMessage = page.locator('.next-button-disabled-message');
 
-    // With 0 names, button should be disabled
+    // With 0 names, button should be disabled and look disabled
     await expect(nextButton).toBeDisabled();
+    await expect(nextButton).toHaveClass(/disabled/);
+    await expect(disabledMessage).toBeVisible();
+    await expect(disabledMessage).toContainText('enter at least 3 names to continue');
 
     // With 1 name, button should still be disabled
     await page.getByPlaceholder(/enter names/i).fill('Alice');
     await expect(nextButton).toBeDisabled();
+    await expect(nextButton).toHaveClass(/disabled/);
+    await expect(disabledMessage).toBeVisible();
 
     // With 2 names, button should still be disabled
     await page.getByPlaceholder(/enter names/i).fill('Alice\nBob');
     await expect(nextButton).toBeDisabled();
+    await expect(nextButton).toHaveClass(/disabled/);
+    await expect(disabledMessage).toBeVisible();
 
-    // With 3 names, button should be enabled
+    // With 3 names, button should be enabled and message should be hidden
     await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie');
     await expect(nextButton).toBeEnabled();
+    await expect(nextButton).not.toHaveClass(/disabled/);
+    await expect(disabledMessage).not.toBeVisible();
 
     // Should be able to click and navigate to step 2
     await nextButton.click();
