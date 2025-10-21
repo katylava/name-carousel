@@ -113,7 +113,8 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
           recipient =>
             recipient.name !== giver.name &&
             !recipient.drawn &&
-            !giver.exclusions.includes(recipient.name)
+            !giver.exclusions.includes(recipient.name) &&
+            recipient.gives_to !== giver.name // Prevent bidirectional assignments
         );
 
         if (availableRecipients.length === 0) {

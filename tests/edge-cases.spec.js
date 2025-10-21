@@ -146,34 +146,24 @@ test.describe('Edge Cases and Error Conditions', () => {
     }
   });
 
-  test('handles drawing with minimal participants', async ({ page }) => {
-    // Skip welcome
+  test('draw algorithm prevents bidirectional assignments', async ({ page }) => {
+    // REGRESSION TEST: Issue #13 - prevent bob→dana and dana→bob
+    // The bug was that algorithm didn't check if recipient.gives_to === giver.name
+    // With only 2 people, ANY result would be bidirectional (A→B and B→A)
+    // So the algorithm should correctly detect this is impossible
     await page.getByRole('button', { name: /start draw/i }).click();
 
-    // Test with just 2 people
     await page.getByPlaceholder(/enter names/i).fill('Alice\nBob');
     await page.getByRole('button', { name: /next/i }).click();
-
-    // Go to draw
     await page.getByRole('button', { name: /draw/i }).click();
     await page.getByLabel(/animation speed/i).fill('0');
+
+    // Attempt to draw - should fail because 2 people always creates bidirectional assignments
     await page.getByRole('button', { name: /🎲 draw names/i }).click();
 
-    // Should successfully create 2 results
-    await expect(page.locator('.result-item').first()).toBeVisible();
-    await expect(page.locator('.result-item')).toHaveCount(2);
-
-    const results = await page.evaluate(() =>
-      JSON.parse(localStorage.getItem('results') || '[]')
-    );
-    expect(results.length).toBe(2);
-
-    // Verify no one gives to themselves
-    results.forEach(result => {
-      expect(result.name).toBeTruthy();
-      expect(result.gives_to).toBeTruthy();
-      expect(result.name).not.toBe(result.gives_to);
-    });
+    // Should show error modal
+    await expect(page.getByRole('heading', { name: /draw failed/i })).toBeVisible();
+    await expect(page.locator('.notification-message')).toContainText('Could not find a valid solution after');
   });
 
   test('handles names with whitespace and empty lines', async ({ page }) => {
