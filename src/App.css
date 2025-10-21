@@ -203,7 +203,7 @@ header {
   text-align: center;
   margin-bottom: var(--spacing-xl);
   padding: var(--spacing-lg) var(--spacing-md);
-  background: linear-gradient(135deg, #fff5ee 0%, #f5e6d3 50%, #fff5ee 100%);
+  background: linear-gradient(135deg, #f5e6d3 0%, #ead5bd 50%, #f5e6d3 100%);
   border: var(--border-width-extra) double var(--circus-crimson);
   border-radius: var(--border-radius-lg);
   box-shadow:
