@@ -359,7 +359,8 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
       /* istanbul ignore next */
       ctx.textAlign = 'center';
 
-      results.forEach((person, index) => {
+      const orderedResults = orderResultsAsChain(results);
+      orderedResults.forEach((person, index) => {
         const y = startY + index * lineHeight;
 
         // Alternating background stripes - circus tent style
