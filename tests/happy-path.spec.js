@@ -363,19 +363,22 @@ test.describe('Happy Path - Complete Draw Flow', () => {
     );
     expect(exclusionsCheck.Alice || []).not.toContain('Bob');
 
-    // Test removing couples
+    // Test removing couples (couples from earlier in test are restored from localStorage)
     await page.getByText(/quick setup.*couples/i).click();
-    await page.getByRole('button', { name: /add couple/i }).click();
-    await page.selectOption('.couple-person-1', 'Eve');
-    await page.selectOption('.couple-person-2', 'Frank');
+    // Should have 1 couple from earlier (Charlie-David)
+    let coupleRowsCheck = page.locator('.couple-row');
+    await expect(coupleRowsCheck).toHaveCount(1);
+
     await page.getByRole('button', { name: /add another couple/i }).click();
-    const coupleRowsCheck = page.locator('.couple-row');
-    await expect(coupleRowsCheck).toHaveCount(2);
+    await coupleRowsCheck.nth(1).locator('.couple-person-1').selectOption('Eve');
+    await coupleRowsCheck.nth(1).locator('.couple-person-2').selectOption('Frank');
+    await page.getByRole('button', { name: /add another couple/i }).click();
+    await expect(coupleRowsCheck).toHaveCount(3);
     await coupleRowsCheck
       .first()
       .getByRole('button', { name: /delete couple/i })
       .click();
-    await expect(coupleRowsCheck).toHaveCount(1);
+    await expect(coupleRowsCheck).toHaveCount(2);
 
     // Navigate back to step 1 to test textarea repopulation
     await page.getByRole('button', { name: /previous/i }).click();

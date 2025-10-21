@@ -452,6 +452,145 @@ test.describe('Edge Cases and Error Conditions', () => {
     fs.unlinkSync(invalidFile);
   });
 
+  test('restores applied couples from localStorage after reload', async ({ page }) => {
+    await page.getByRole('button', { name: /start draw/i }).click();
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie\nDavid');
+    await page.getByRole('button', { name: /next/i }).click();
+
+    // Expand couples section and add/apply a couple
+    await page.getByText(/quick setup.*couples/i).click();
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await page.selectOption('.couple-person-1', 'Alice');
+    await page.selectOption('.couple-person-2', 'Bob');
+    await page.getByRole('button', { name: /^apply couple$/i }).click();
+
+    // Collapse to verify count shows 1
+    await page.getByText(/quick setup.*couples/i).click();
+    await expect(page.getByText(/1 couple configured/i)).toBeVisible();
+
+    // Verify couples are saved to localStorage before reload (applied state is derived from exclusions)
+    const savedCouples = await page.evaluate(() => localStorage.getItem('couples'));
+    expect(savedCouples).toBeTruthy();
+    const parsedCouples = JSON.parse(savedCouples);
+    expect(parsedCouples.length).toBe(1);
+    expect(parsedCouples[0].person1).toBe('Alice');
+    expect(parsedCouples[0].person2).toBe('Bob');
+
+    // Reload the page
+    await page.reload();
+
+    // After reload, should be on exclusions step already (restored from localStorage)
+    // Couple count should still show 1
+    await expect(page.getByText(/1 couple configured/i)).toBeVisible();
+
+    // Expand couples section
+    await page.getByText(/quick setup.*couples/i).click();
+
+    // Couple rows should be visible and show the applied couple
+    const coupleRows = page.locator('.couple-row');
+    await expect(coupleRows).toHaveCount(1);
+
+    // Verify the couple has correct values
+    const firstRow = coupleRows.first();
+    await expect(firstRow.locator('.couple-person-1')).toHaveValue('Alice');
+    await expect(firstRow.locator('.couple-person-2')).toHaveValue('Bob');
+
+    // Verify the couple has applied state preserved
+    await expect(firstRow.getByRole('button', { name: /^remove$/i })).toBeVisible();
+
+    // Verify we can remove the couple (toggles exclusions off)
+    await firstRow.getByRole('button', { name: /^remove$/i }).click();
+    const exclusionsAfterRemove = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('exclusions') || '{}')
+    );
+    expect(exclusionsAfterRemove['Alice'] || []).not.toContain('Bob');
+  });
+
+  test('handles corrupted couples in localStorage', async ({ page }) => {
+    await page.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('names', 'Alice\nBob\nCharlie');
+      localStorage.setItem('currentStep', '1');
+      localStorage.setItem('drawName', 'Test Draw');
+      localStorage.setItem('hasSeenWelcome', 'true');
+      localStorage.setItem('couples', '{malformed json}'); // Invalid JSON
+    });
+
+    await page.goto('http://localhost:3000');
+
+    // Should load directly to step 1 (exclusions) from localStorage
+    // Should load without crashing despite corrupted couples
+    await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
+    await page.getByText(/quick setup.*couples/i).click();
+
+    // Should have no couple rows (corrupted data ignored)
+    const coupleRows = page.locator('.couple-row');
+    await expect(coupleRows).toHaveCount(0);
+
+    // Should be able to add new couples normally
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await expect(coupleRows).toHaveCount(1);
+  });
+
+  test('restores couples without exclusions from localStorage', async ({ page }) => {
+    // Test the case where couples exist but no exclusions are saved
+    // This covers the false branch of: savedExclusions ? JSON.parse(savedExclusions) : {}
+    await page.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('names', 'Alice\nBob\nCharlie\nDavid');
+      localStorage.setItem('currentStep', '1');
+      localStorage.setItem('drawName', 'Test Draw');
+      localStorage.setItem('hasSeenWelcome', 'true');
+      localStorage.setItem('couples', JSON.stringify([
+        { person1: 'Alice', person2: 'Bob', applied: false },
+        { person1: 'Charlie', person2: 'David', applied: false }
+      ]));
+      // Note: NOT setting exclusions in localStorage
+    });
+
+    await page.goto('http://localhost:3000');
+
+    await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
+    await page.getByText(/quick setup.*couples/i).click();
+
+    // Should restore couple rows even without exclusions
+    const coupleRows = page.locator('.couple-row');
+    await expect(coupleRows).toHaveCount(2);
+
+    // Both couples should be unapplied (applied: false)
+    await expect(coupleRows.first().getByRole('button', { name: /^apply couple$/i })).toBeVisible();
+    await expect(coupleRows.last().getByRole('button', { name: /^apply couple$/i })).toBeVisible();
+  });
+
+  test('restores couples with partial exclusions from localStorage', async ({ page }) => {
+    // Test where only one person in a couple has exclusions
+    // This covers the || [] branch when currentExclusions[person2] is undefined
+    await page.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('names', 'Alice\nBob\nCharlie\nDavid');
+      localStorage.setItem('currentStep', '1');
+      localStorage.setItem('drawName', 'Test Draw');
+      localStorage.setItem('hasSeenWelcome', 'true');
+      localStorage.setItem('couples', JSON.stringify([
+        { person1: 'Alice', person2: 'Bob', applied: false }
+      ]));
+      // Set partial exclusions: Alice excludes Bob, but Bob has no exclusions
+      localStorage.setItem('exclusions', JSON.stringify({ Alice: ['Bob'] }));
+    });
+
+    await page.goto('http://localhost:3000');
+
+    await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
+    await page.getByText(/quick setup.*couples/i).click();
+
+    // Should restore couple row
+    const coupleRows = page.locator('.couple-row');
+    await expect(coupleRows).toHaveCount(1);
+
+    // Couple should be unapplied because exclusions are not mutual
+    await expect(coupleRows.first().getByRole('button', { name: /^apply couple$/i })).toBeVisible();
+  });
+
   test('loads exclusions from localStorage on mount', async ({ page }) => {
     // Set up state in localStorage
     await page.evaluate(() => {
@@ -810,6 +949,10 @@ test.describe('Edge Cases and Error Conditions', () => {
     // Verify the change took effect
     const firstCoupleDropdown = coupleRows.first().locator('.couple-person-1');
     await expect(firstCoupleDropdown).toHaveValue('Charlie');
+
+    // Delete the second couple (which is unapplied) to test handleDeleteCouple with unapplied couple
+    await coupleRows.last().getByRole('button', { name: 'Delete couple' }).click();
+    await expect(coupleRows).toHaveCount(1);
   });
 
   test('handles apply couple with invalid inputs', async ({ page }) => {

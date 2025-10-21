@@ -31,12 +31,49 @@ export function SelectExclusions({
     }
   }, [exclusions, setExclusions]);
 
+  // Load couples from localStorage on component mount only
+  useEffect(() => {
+    const savedCouples = localStorage.getItem('couples');
+    const savedExclusions = localStorage.getItem('exclusions');
+
+    if (savedCouples) {
+      try {
+        const parsedCouples = JSON.parse(savedCouples);
+        // Get saved exclusions for checking applied state
+        const currentExclusions = savedExclusions
+          ? JSON.parse(savedExclusions)
+          : {};
+        // Derive applied state from exclusions
+        const couplesWithAppliedState = parsedCouples.map(couple => {
+          const isApplied =
+            couple.person1 &&
+            couple.person2 &&
+            (currentExclusions[couple.person1] || []).includes(couple.person2) &&
+            (currentExclusions[couple.person2] || []).includes(couple.person1);
+          return { ...couple, applied: isApplied };
+        });
+        setCouples(couplesWithAppliedState);
+      } catch (e) {
+        console.error('Failed to parse saved couples:', e);
+      }
+    }
+  }, []); // Only run once on mount
+
   // Save exclusions to localStorage whenever they change
   useEffect(() => {
     if (Object.keys(exclusions).length > 0) {
       localStorage.setItem('exclusions', JSON.stringify(exclusions));
     }
   }, [exclusions]);
+
+  // Save couples to localStorage whenever they change
+  useEffect(() => {
+    if (couples.length > 0) {
+      localStorage.setItem('couples', JSON.stringify(couples));
+    } else {
+      localStorage.removeItem('couples');
+    }
+  }, [couples]);
 
   const handleExclusionToggle = (giver, excluded) => {
     setExclusions(prev => {
