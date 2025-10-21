@@ -693,6 +693,18 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
               </button>
             </div>
 
+            <div className="secondary-actions">
+              <button onClick={() => setResults([])} className="redraw-button">
+                🎲 Draw Again
+              </button>
+            </div>
+
+            <div className="download-separator">
+              <span>◆ ◆ ◆</span>
+            </div>
+
+            <div className="download-label">download results:</div>
+
             <div className="download-actions">
               <button
                 onClick={handleExport}
@@ -706,12 +718,6 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
               </button>
               <button onClick={handleSave} className="save-button">
                 💾 Save to File
-              </button>
-            </div>
-
-            <div className="secondary-actions">
-              <button onClick={() => setResults([])} className="redraw-button">
-                🎲 Draw Again
               </button>
             </div>
           </div>

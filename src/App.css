@@ -677,6 +677,7 @@ button:active {
 .primary-action {
   font-size: var(--text-3xl);
   padding: var(--spacing-md) var(--spacing-xl);
+  flex: 1;
 }
 
 .download-actions button {
@@ -684,9 +685,31 @@ button:active {
   padding: var(--spacing-xs) var(--spacing-md);
 }
 
+.secondary-actions {
+  margin-top: 0;
+}
+
 .secondary-actions button {
+  font-size: var(--text-3xl);
+  padding: var(--spacing-md) var(--spacing-xl);
+  width: 100%;
+}
+
+.download-separator {
+  text-align: center;
+  margin: var(--spacing-md) 0;
+  color: var(--circus-gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.5rem;
+}
+
+.download-label {
+  text-align: center;
   font-size: var(--text-sm);
-  padding: var(--spacing-xs) var(--spacing-md);
+  color: var(--text-secondary);
+  text-transform: lowercase;
+  margin-bottom: var(--spacing-xs);
+  font-family: var(--font-subhead);
 }
 
 /* Results */

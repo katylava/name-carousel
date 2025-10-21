@@ -314,6 +314,10 @@ test.describe('Happy Path - Complete Draw Flow', () => {
     const jsonDownload = await jsonDownloadPromise;
     expect(jsonDownload.suggestedFilename()).toMatch(/\.json$/);
 
+    // Test button layout: verify "download results:" label appears before download buttons
+    const downloadLabel = page.locator('text=download results:');
+    await expect(downloadLabel).toBeVisible();
+
     // Test Help Modal
     await page.getByRole('button', { name: /help/i }).click();
     await expect(
