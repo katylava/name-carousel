@@ -99,6 +99,8 @@ CSS-only = changes ONLY to .css files, no .js/.jsx changes
 - ❌ Skip pre-flight checks when starting new issue
 - ❌ Delete issue that is **NOT** marked APPROVED or 👍 APPROVED
 - ❌ Delete issue immediately after completing it
+- ❌ Use issue numbers in code or commit messages. Issue numbers are re-used so
+  identifying them by number is not useful
 
 ### ALWAYS:
 - ✅ Write test FIRST (except CSS-only changes)

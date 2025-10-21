@@ -123,7 +123,7 @@ Screenshot shows:
 - Icon maintains Victorian styling
 
 ### Committed:
-a1b2c3d - Fix issue 1: Move help icon to page margin
+a1b2c3d - Move help icon to page margin
 
 ### ISSUES.md Updated:
 Changed from:
@@ -205,7 +205,7 @@ Coverage summary:
 ✓ Coverage: 100% statements, 100% functions, 100% lines, 100% branches
 
 ### Committed:
-e4f5g6h - Fix issue 10: Warn user when duplicate names entered
+e4f5g6h - Warn user when duplicate names entered
 
 ### ISSUES.md Updated:
 Changed from:

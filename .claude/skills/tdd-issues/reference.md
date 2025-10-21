@@ -99,7 +99,7 @@ Per CLAUDE.md: "Test isolation is not always important"
 ### Test Naming Convention
 - Use descriptive test names that explain the user journey
 - Include "why" not just "what": `test('warns user when entering duplicate name to prevent confusion', ...)`
-- Do not reference issue number in test
+- Do not reference issue number in test name
 
 ## Coverage Requirements
 
