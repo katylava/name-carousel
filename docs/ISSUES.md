@@ -21,5 +21,10 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     ❌ REJECTED - the button is disabled but does not appear disabled to the
     user. just makes teh site look broken. the button UI should indicate it is
     disabled and next to the button (when disabled) it should say "enter at
-    least 3 names to continue).
-15. When you remove a couple after applying, the exclusions aren't removed.
+    least 3 names to continue). ✅ DONE - Added visual disabled state with reduced
+    opacity and gray background. Message "(enter at least 3 names to continue)"
+    appears next to button when disabled. Message disappears when ≥3 names entered.
+15. ✅ DONE - When you remove a couple after applying, the exclusions aren't removed.
+    Fixed as part of issue 9. The handleDeleteCouple function now removes
+    exclusions when deleting an applied couple. Test coverage added to verify
+    exclusions are removed when trash icon is clicked on applied couple.
