@@ -26,29 +26,19 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     download.
 6. The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent.
-7. ✅ DONE - App needs a footer with copyright and link to github repo
-8. The import button and surrouding element are in a weird position. The
+7. The import button and surrouding element are in a weird position. The
     surrounding element bumps right up into the "start draw" button. Since the
     two options are to start a new draw or import one, they can be side-by-side
     with explanatory text below.
-9. ✅ DONE - There is still a lot of padding (or line height?) between
-    checkboxes in the exclusions grid. 🔄 REQUESTING RE-REVIEW - reduced gap
-    to 0.15rem, line-height: 1.0, and checkbox padding to 0.15rem 0.3rem,
-    tested with 15 participants 👍 APPROVED
-10. Warn the user if they enter the same name twice. The text box should turn
+8. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
-11. ✅ DONE - All javascript alerts should be modals instead.
-12. ✅ DONE - Since "start over" is a destructive action, we should ask the user
-    for confirmation in a modal. We should explain that they will lose the data
-    they have entered.
-13. ✅ DONE - The draw name does not appear step 2, but it is on step 1 and 3.
-    However it is formatted differently on step 3. It should be on all steps
-    and be formatted the same on all of them.
-14. apply couple UI. if you hit apply couple twice, the second time it removes
+9. IN the apply couple UI, if you hit apply couple twice, the second time it removes
     them. seems like we don't really need so many buttons then. we can replace
     apply couple with remove after they are applied.
-15. apply couple UI... when restored from localStorage, configured couples are
+10. In apply couple UI... when restored from localStorage, configured couples are
     shown in the count (the "N couples configured" text), but when you expand it
     the rows of form fields for those couples are not displayed, so cannot be
     removed.
+11. Start over modal buttons have low contrast, can't read text well. Use
+    colors we use on other buttons.
