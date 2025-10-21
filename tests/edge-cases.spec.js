@@ -911,9 +911,10 @@ test.describe('Edge Cases and Error Conditions', () => {
     let savedDrawName = await page.evaluate(() => localStorage.getItem('drawName'));
     expect(savedDrawName).toBe('Step 2 Test Name');
 
-    // Test editing draw name on step 2 using blur
+    // Test editing draw name on step 2 using blur (also tests typing non-Enter keys)
     await page.locator('.carousel-name-display').click();
-    await drawNameInput.fill('Step 2 Blur Test');
+    await drawNameInput.fill(''); // Clear first
+    await drawNameInput.type('Step 2 Blur Test'); // Type character by character to cover non-Enter key branch
     await page.getByRole('heading', { name: /select exclusions/i }).click(); // Click elsewhere to blur
     await expect(drawNameTitle).toHaveText('Step 2 Blur Test');
 
@@ -924,9 +925,10 @@ test.describe('Edge Cases and Error Conditions', () => {
     await expect(drawNameTitle).toBeVisible();
     await expect(drawNameTitle).toHaveText('Step 2 Blur Test');
 
-    // Edit draw name on step 3 using blur
+    // Edit draw name on step 3 using blur (also tests typing non-Enter keys)
     await page.locator('.carousel-name-display').click();
-    await drawNameInput.fill('Step 3 Test Name');
+    await drawNameInput.fill(''); // Clear first
+    await drawNameInput.type('Step 3 Test Name'); // Type character by character to cover non-Enter key branch
     await page.getByLabel(/animation speed/i).click(); // Click elsewhere to blur
     await expect(drawNameTitle).toHaveText('Step 3 Test Name');
 

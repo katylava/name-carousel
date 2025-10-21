@@ -17,9 +17,7 @@ export function NotificationModal({
   };
 
   const handleConfirm = () => {
-    if (onConfirm) {
-      onConfirm();
-    }
+    onConfirm();
     onClose();
   };
 
