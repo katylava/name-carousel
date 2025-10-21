@@ -1343,7 +1343,24 @@ button:active {
 }
 
 .welcome-actions {
+  display: flex;
+  gap: var(--spacing-xl);
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: var(--spacing-xl);
+}
+
+.action-option {
+  flex: 1;
+  max-width: 300px;
   text-align: center;
+}
+
+.action-help {
+  margin-top: var(--spacing-sm);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
 }
 
 .start-button {
@@ -1351,6 +1368,7 @@ button:active {
   font-size: 1.3rem;
   padding: 1rem 3rem;
   box-shadow: var(--shadow);
+  width: 100%;
 }
 
 .start-button:hover {
@@ -1370,6 +1388,15 @@ button:active {
 
   .welcome-content {
     padding: 1.5rem;
+  }
+
+  .welcome-actions {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .action-option {
+    max-width: 100%;
   }
 
   .start-button {
@@ -1469,31 +1496,13 @@ button:active {
 }
 
 /* Import/Export Section */
-.import-section {
-  margin-bottom: var(--spacing-lg);
-  padding: var(--spacing-sm);
-  background: rgba(178, 34, 34, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-md);
+.import-button {
+  background: var(--primary-color);
+  font-size: 1rem;
+  padding: 0.75rem 2rem;
+  width: 100%;
 }
 
-.import-section label {
-  flex-shrink: 0;
-}
-
-.import-help {
-  flex: 1;
-  font-size: var(--text-sm);
-  margin: 0;
-  color: var(--text-secondary);
-  text-align: left;
-}
-
-.import-button,
 .export-button {
   background: var(--primary-color);
   font-size: var(--text-sm);
@@ -1514,12 +1523,6 @@ button:active {
 
 .share-button:hover {
   background: #2980b9;
-}
-
-.import-help {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #666;
 }
 
 /* Animation Controls */

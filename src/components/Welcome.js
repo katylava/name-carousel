@@ -126,11 +126,16 @@ export function Welcome({
       </div>
 
       <div className="welcome-actions">
-        <button onClick={onStart} className="start-button">
-          Start Draw
-        </button>
+        <div className="action-option">
+          <button onClick={onStart} className="start-button">
+            Start Draw
+          </button>
+          <p className="action-help">
+            Begin a fresh draw with a new set of participants
+          </p>
+        </div>
 
-        <div className="import-section">
+        <div className="action-option">
           <input
             type="file"
             accept=".json"
@@ -149,7 +154,7 @@ export function Welcome({
               📥 Import Draw
             </button>
           </label>
-          <p className="import-help">
+          <p className="action-help">
             <strong>💡 Tip:</strong> Import last year's draw to automatically
             exclude previous matches
           </p>
