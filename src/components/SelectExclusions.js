@@ -56,7 +56,7 @@ export function SelectExclusions({
   };
 
   const handleAddCouple = () => {
-    setCouples(prev => [...prev, { person1: '', person2: '' }]);
+    setCouples(prev => [...prev, { person1: '', person2: '', applied: false }]);
   };
 
   const handleCoupleChange = (index, field, value) => {
@@ -70,16 +70,40 @@ export function SelectExclusions({
   const handleApplyCouple = index => {
     const couple = couples[index];
     if (couple.person1 && couple.person2 && couple.person1 !== couple.person2) {
-      // Make them mutually exclusive
-      handleExclusionToggle(couple.person1, couple.person2);
-      handleExclusionToggle(couple.person2, couple.person1);
-      const newCount = appliedCouplesCount + 1;
-      setAppliedCouplesCount(newCount);
-      localStorage.setItem('appliedCouplesCount', newCount.toString());
+      if (couple.applied) {
+        // Remove the mutual exclusions
+        handleExclusionToggle(couple.person1, couple.person2);
+        handleExclusionToggle(couple.person2, couple.person1);
+        const newCount = appliedCouplesCount - 1;
+        setAppliedCouplesCount(newCount);
+        localStorage.setItem('appliedCouplesCount', newCount.toString());
+        // Mark as not applied
+        setCouples(prev =>
+          prev.map((c, i) => (i === index ? { ...c, applied: false } : c))
+        );
+      } else {
+        // Make them mutually exclusive
+        handleExclusionToggle(couple.person1, couple.person2);
+        handleExclusionToggle(couple.person2, couple.person1);
+        const newCount = appliedCouplesCount + 1;
+        setAppliedCouplesCount(newCount);
+        localStorage.setItem('appliedCouplesCount', newCount.toString());
+        // Mark as applied
+        setCouples(prev =>
+          prev.map((c, i) => (i === index ? { ...c, applied: true } : c))
+        );
+      }
     }
   };
 
-  const handleRemoveCouple = index => {
+  const handleDeleteCouple = index => {
+    const couple = couples[index];
+    // If couple was applied, decrement count
+    if (couple.applied) {
+      const newCount = appliedCouplesCount - 1;
+      setAppliedCouplesCount(newCount);
+      localStorage.setItem('appliedCouplesCount', newCount.toString());
+    }
     setCouples(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -197,10 +221,16 @@ export function SelectExclusions({
                   ))}
                 </select>
                 <button type="button" onClick={() => handleApplyCouple(index)}>
-                  Apply Couple
+                  {couple.applied ? 'Remove' : 'Apply Couple'}
                 </button>
-                <button type="button" onClick={() => handleRemoveCouple(index)}>
-                  Remove
+                <button
+                  type="button"
+                  onClick={() => handleDeleteCouple(index)}
+                  className="delete-couple"
+                  aria-label="Delete couple"
+                  title="Delete this couple row"
+                >
+                  ×
                 </button>
               </div>
             ))}

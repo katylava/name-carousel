@@ -373,7 +373,7 @@ test.describe('Happy Path - Complete Draw Flow', () => {
     await expect(coupleRowsCheck).toHaveCount(2);
     await coupleRowsCheck
       .first()
-      .getByRole('button', { name: /remove/i })
+      .getByRole('button', { name: /delete couple/i })
       .click();
     await expect(coupleRowsCheck).toHaveCount(1);
 
