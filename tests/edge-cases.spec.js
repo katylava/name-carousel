@@ -126,12 +126,22 @@ test.describe('Edge Cases and Error Conditions', () => {
 
     // Check if results appeared or error shown
     const resultCount = await page.locator('.result-item').count();
+    const modalVisible = await page.locator('.modal-backdrop').isVisible();
+
     if (resultCount > 0) {
       // Algorithm succeeded
       expect(resultCount).toBe(3);
+      expect(modalVisible).toBe(false);
+    } else if (modalVisible) {
+      // Algorithm failed and showed error modal
+      await expect(page.getByRole('heading', { name: /draw failed/i })).toBeVisible();
+      await expect(page.locator('.notification-message')).toContainText('Could not find a valid solution after');
+
+      // Close modal
+      await page.locator('.notification-button').click();
+      await expect(page.locator('.modal-backdrop')).not.toBeVisible();
     } else {
-      // Algorithm should show error or keep retrying
-      // This tests the retry logic
+      // Algorithm is still retrying
       expect(resultCount).toBe(0);
     }
   });
@@ -235,11 +245,11 @@ test.describe('Edge Cases and Error Conditions', () => {
     expect(exportedData.exclusions.Alice).toContain('Bob');
     expect(exportedData.results.length).toBe(4);
 
-    // Start over
+    // Start over - confirm the modal
     await page.getByRole('button', { name: /start over/i }).click();
-    await expect(
-      page.getByRole('button', { name: /start draw/i })
-    ).toBeVisible();
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await page.locator('.notification-confirm').click();
+    await expect(page.getByRole('button', { name: /start draw/i })).toBeVisible();
 
     // Test import
     const fileChooserPromise = page.waitForEvent('filechooser');
@@ -370,8 +380,8 @@ test.describe('Edge Cases and Error Conditions', () => {
 
     await page.reload();
 
-    // Should still load without crashing
-    await expect(page.locator('h2')).toBeVisible();
+    // Should still load without crashing - verify we're on step 3
+    await expect(page.getByRole('button', { name: /🎲 draw names/i })).toBeVisible();
   });
 
   test('handles invalid import file missing names array', async ({ page }) => {
@@ -390,22 +400,20 @@ test.describe('Edge Cases and Error Conditions', () => {
     const invalidFile = path.join(tempDir, 'invalid-draw.json');
     fs.writeFileSync(invalidFile, JSON.stringify(invalidData));
 
-    // Listen for alert
-    let alertMessage = '';
-    page.on('dialog', async dialog => {
-      alertMessage = dialog.message();
-      await dialog.accept();
-    });
-
     // Try to import
     const fileChooserPromise = page.waitForEvent('filechooser');
     await page.getByRole('button', { name: /import draw/i }).click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(invalidFile);
 
-    // Should show error
-    await page.waitForTimeout(500);
-    expect(alertMessage).toContain('Invalid draw file: missing names array');
+    // Should show error modal
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /invalid file/i })).toBeVisible();
+    await expect(page.locator('.notification-message')).toContainText('Invalid draw file: missing names array');
+
+    // Close modal
+    await page.locator('.notification-button').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
 
     // Should still be on welcome page
     await expect(
@@ -425,22 +433,20 @@ test.describe('Edge Cases and Error Conditions', () => {
     const invalidFile = path.join(tempDir, 'malformed.json');
     fs.writeFileSync(invalidFile, '{not valid json');
 
-    // Listen for alert
-    let alertMessage = '';
-    page.on('dialog', async dialog => {
-      alertMessage = dialog.message();
-      await dialog.accept();
-    });
-
     // Try to import
     const fileChooserPromise = page.waitForEvent('filechooser');
     await page.getByRole('button', { name: /import draw/i }).click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(invalidFile);
 
-    // Should show error
-    await page.waitForTimeout(500);
-    expect(alertMessage).toContain('Invalid draw file:');
+    // Should show error modal
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /import failed/i })).toBeVisible();
+    await expect(page.locator('.notification-message')).toContainText('Invalid draw file:');
+
+    // Close modal
+    await page.locator('.notification-button').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
 
     // Clean up
     fs.unlinkSync(invalidFile);
@@ -509,26 +515,16 @@ test.describe('Edge Cases and Error Conditions', () => {
     const exportFile = path.join(tempDir, 'test-export-results.json');
     fs.writeFileSync(exportFile, JSON.stringify(exportData));
 
-    // Set up alert handler to verify success message
-    let alertMessage = '';
-    page.on('dialog', async dialog => {
-      alertMessage = dialog.message();
-      await dialog.accept();
-    });
-
     // Import the file
     const fileChooserPromise = page.waitForEvent('filechooser');
     await page.getByRole('button', { name: /import draw/i }).click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(exportFile);
 
-    // Wait for import to complete and verify alert
-    await page.waitForTimeout(500);
-    expect(alertMessage).toContain(
-      'Previous matches have been added as exclusions'
-    );
+    // Import should auto-navigate to step 1 (Enter Names)
+    await expect(page.getByRole('heading', { name: /enter names/i })).toBeVisible();
 
-    // Navigate to exclusions to verify
+    // Navigate to exclusions to verify imported data
     await page.getByRole('button', { name: /next/i }).click();
 
     // Verify exclusions were merged correctly
@@ -572,26 +568,16 @@ test.describe('Edge Cases and Error Conditions', () => {
     const exportFile = path.join(tempDir, 'test-export-no-results.json');
     fs.writeFileSync(exportFile, JSON.stringify(exportData));
 
-    // Set up alert handler
-    let alertMessage = '';
-    page.on('dialog', async dialog => {
-      alertMessage = dialog.message();
-      await dialog.accept();
-    });
-
     // Import the file
     const fileChooserPromise = page.waitForEvent('filechooser');
     await page.getByRole('button', { name: /import draw/i }).click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(exportFile);
 
-    // Wait for import to complete
-    await page.waitForTimeout(500);
-    expect(alertMessage).toContain(
-      'Previous matches have been added as exclusions'
-    );
+    // Import should auto-navigate to step 1 (Enter Names)
+    await expect(page.getByRole('heading', { name: /enter names/i })).toBeVisible();
 
-    // Navigate to exclusions to verify
+    // Navigate to exclusions to verify imported data
     await page.getByRole('button', { name: /next/i }).click();
 
     // Verify only the original exclusions exist (no results to merge)
@@ -685,17 +671,10 @@ test.describe('Edge Cases and Error Conditions', () => {
       navigator.canShare = data => true;
     });
 
-    let alertCount = 0;
-    let alertMessage = '';
-    page.on('dialog', async dialog => {
-      alertCount++;
-      alertMessage = dialog.message();
-      await dialog.accept();
-    });
-
     await page.getByRole('button', { name: /📲 share results/i }).click();
     await page.waitForTimeout(500);
-    expect(alertCount).toBe(0); // No alert for successful share
+    // No modal should appear for successful share
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
 
     // Scenario 2: User cancels (AbortError)
     await page.evaluate(() => {
@@ -707,10 +686,10 @@ test.describe('Edge Cases and Error Conditions', () => {
       navigator.canShare = () => true;
     });
 
-    alertCount = 0;
     await page.getByRole('button', { name: /📲 share results/i }).click();
     await page.waitForTimeout(500);
-    expect(alertCount).toBe(0); // No alert for user cancellation
+    // No modal should appear for user cancellation
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
 
     // Scenario 3: Network error (non-AbortError)
     await page.evaluate(() => {
@@ -722,10 +701,16 @@ test.describe('Edge Cases and Error Conditions', () => {
       navigator.canShare = () => true;
     });
 
-    alertMessage = '';
     await page.getByRole('button', { name: /📲 share results/i }).click();
     await page.waitForTimeout(1000);
-    expect(alertMessage).toContain('Sharing failed'); // Should show error alert
+    // Should show error modal
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /share failed/i })).toBeVisible();
+    await expect(page.locator('.notification-message')).toContainText('Sharing failed');
+
+    // Close modal
+    await page.locator('.notification-button').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
   });
 
   test('respects prefers-reduced-motion setting', async ({ page }) => {
@@ -855,5 +840,141 @@ test.describe('Edge Cases and Error Conditions', () => {
       JSON.parse(localStorage.getItem('exclusions') || '{}')
     );
     expect(Object.keys(exclusionsAfter).length).toBe(0);
+  });
+
+  test('NotificationModal can be closed via backdrop click and close button', async ({ page }) => {
+    // Create an invalid import to trigger a notification modal
+    const fs = require('fs');
+    const path = require('path');
+
+    const invalidData = { drawName: 'Test', exclusions: {}, results: [] };
+    const tempDir = '/tmp';
+    const invalidFile = path.join(tempDir, 'test-modal-close.json');
+    fs.writeFileSync(invalidFile, JSON.stringify(invalidData));
+
+    const fileChooserPromise = page.waitForEvent('filechooser');
+    await page.getByRole('button', { name: /import draw/i }).click();
+    const fileChooser = await fileChooserPromise;
+    await fileChooser.setFiles(invalidFile);
+
+    // Modal should be visible
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /invalid file/i })).toBeVisible();
+
+    // Test backdrop click (click outside the modal content)
+    await page.locator('.modal-backdrop').click({ position: { x: 10, y: 10 } });
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
+
+    // Trigger modal again
+    const fileChooserPromise2 = page.waitForEvent('filechooser');
+    await page.getByRole('button', { name: /import draw/i }).click();
+    const fileChooser2 = await fileChooserPromise2;
+    await fileChooser2.setFiles(invalidFile);
+
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+
+    // Test close button (X button)
+    await page.locator('.modal-close').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
+
+    // Clean up
+    fs.unlinkSync(invalidFile);
+  });
+
+  test('draw name editing works on all steps', async ({ page }) => {
+    // Start draw and get to step 1
+    await page.getByRole('button', { name: /start draw/i }).click();
+
+    // Verify draw name appears on step 1 (already tested in happy-path)
+    const drawNameTitle = page.locator('.carousel-name-title');
+    const initialDrawName = await drawNameTitle.textContent();
+    expect(initialDrawName).toBeTruthy();
+
+    // Add names to proceed
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie');
+    await page.getByRole('button', { name: /next/i }).click();
+
+    // Test editing draw name on step 2 (SelectExclusions)
+    await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
+    await expect(drawNameTitle).toBeVisible();
+    await expect(drawNameTitle).toHaveText(initialDrawName);
+
+    // Edit draw name on step 2
+    await page.locator('.carousel-name-display').click();
+    const drawNameInput = page.locator('.carousel-name-input');
+    await expect(drawNameInput).toBeVisible();
+    await drawNameInput.fill('Step 2 Test Name');
+    await drawNameInput.press('Enter');
+    await expect(drawNameTitle).toHaveText('Step 2 Test Name');
+
+    // Verify it persisted to localStorage
+    let savedDrawName = await page.evaluate(() => localStorage.getItem('drawName'));
+    expect(savedDrawName).toBe('Step 2 Test Name');
+
+    // Navigate to step 3
+    await page.getByRole('button', { name: /draw/i }).click();
+
+    // Test editing draw name on step 3 (Results)
+    await expect(drawNameTitle).toBeVisible();
+    await expect(drawNameTitle).toHaveText('Step 2 Test Name');
+
+    // Edit draw name on step 3 using blur
+    await page.locator('.carousel-name-display').click();
+    await drawNameInput.fill('Step 3 Test Name');
+    await page.getByLabel(/animation speed/i).click(); // Click elsewhere to blur
+    await expect(drawNameTitle).toHaveText('Step 3 Test Name');
+
+    // Verify it persisted to localStorage
+    savedDrawName = await page.evaluate(() => localStorage.getItem('drawName'));
+    expect(savedDrawName).toBe('Step 3 Test Name');
+
+    // Perform a draw and verify draw name still appears correctly
+    await page.getByLabel(/animation speed/i).fill('0');
+    await page.getByRole('button', { name: /🎲 draw names/i }).click();
+    await expect(page.locator('.result-item').first()).toBeVisible();
+    await expect(drawNameTitle).toHaveText('Step 3 Test Name');
+  });
+
+  test('Start Over button shows confirmation modal', async ({ page }) => {
+    // Set up a complete draw with data
+    await page.getByRole('button', { name: /start draw/i }).click();
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie');
+    await page.getByRole('button', { name: /next/i }).click();
+
+    // Add some exclusions
+    const aliceRow = page.locator('.person-row').nth(0);
+    await aliceRow.locator('input[data-exclude="Bob"]').check();
+
+    // Click Start Over button
+    await page.getByRole('button', { name: /start over/i }).click();
+
+    // Should show confirmation modal
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /start over/i })).toBeVisible();
+    await expect(page.locator('.notification-message')).toContainText('All data you have entered will be lost');
+
+    // Test cancel button
+    await page.locator('.notification-cancel').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
+
+    // Verify we're still on step 2 with data intact
+    await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
+    await expect(aliceRow.locator('input[data-exclude="Bob"]')).toBeChecked();
+
+    // Click Start Over again and confirm this time
+    await page.getByRole('button', { name: /start over/i }).click();
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+
+    await page.locator('.notification-confirm').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
+
+    // Should be back at welcome page
+    await expect(page.getByRole('button', { name: /start draw/i })).toBeVisible();
+
+    // Verify localStorage was cleared
+    const names = await page.evaluate(() => localStorage.getItem('names'));
+    expect(names).toBeNull();
+    const exclusions = await page.evaluate(() => localStorage.getItem('exclusions'));
+    expect(exclusions).toBeNull();
   });
 });

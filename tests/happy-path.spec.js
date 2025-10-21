@@ -278,20 +278,22 @@ test.describe('Happy Path - Complete Draw Flow', () => {
     await expect(page.locator('.result-item').first()).toBeVisible();
     await expect(page.locator('.result-item')).toHaveCount(6);
 
-    // Test share functionality (will fail in headless, expect alert)
-    let alertMessage = '';
-    page.on('dialog', async dialog => {
-      alertMessage = dialog.message();
-      await dialog.accept();
-    });
-
+    // Test share functionality (will fail in headless, expect modal)
     await page.getByRole('button', { name: /📲 share results/i }).click();
     await page.waitForTimeout(500);
-    expect(alertMessage).toContain("doesn't support image sharing");
+
+    // Should show modal since headless doesn't support image sharing
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /sharing not supported/i })).toBeVisible();
+    await expect(page.locator('.notification-message')).toContainText("doesn't support image sharing");
+
+    // Close modal
+    await page.locator('.notification-button').click();
+    await expect(page.locator('.modal-backdrop')).not.toBeVisible();
 
     // Test Copy Results button
-    await page.getByRole('button', { name: /📋 copy results/i }).click();
     // Note: clipboard API may not work in headless, but we're testing the button works
+    await page.getByRole('button', { name: /📋 copy results/i }).click();
     await page.waitForTimeout(100);
 
     // Test Save to File button (.txt download)
@@ -386,8 +388,10 @@ test.describe('Happy Path - Complete Draw Flow', () => {
     await page.getByRole('button', { name: /next/i }).click();
     await page.getByRole('button', { name: /draw/i }).click();
 
-    // Test Start Over button
+    // Test Start Over button - confirm the modal
     await page.getByRole('button', { name: /start over/i }).click();
+    await expect(page.locator('.modal-backdrop')).toBeVisible();
+    await page.locator('.notification-confirm').click();
 
     // Should be back on welcome page
     await expect(
