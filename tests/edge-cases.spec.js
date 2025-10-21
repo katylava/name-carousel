@@ -1344,4 +1344,54 @@ test.describe('Edge Cases and Error Conditions', () => {
     await expect(errorMessage).not.toBeVisible();
     await expect(textarea).not.toHaveClass(/error/);
   });
+
+  test('Start Over clears couple rows from localStorage', async ({ page }) => {
+    // Start the draw and enter names
+    await page.getByRole('button', { name: /start draw/i }).click();
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nEdith\nFrank');
+    await page.getByRole('button', { name: /next/i }).click();
+
+    // Expand couples section
+    await page.getByText(/quick setup.*couples/i).click();
+
+    // Add two couples
+    await page.getByRole('button', { name: /add couple/i }).click();
+    await page.selectOption('.couple-person-1', 'Alice');
+    await page.selectOption('.couple-person-2', 'Bob');
+
+    await page.getByRole('button', { name: /add another couple/i }).click();
+    const secondCoupleRow = page.locator('.couple-row').nth(1);
+    await secondCoupleRow.locator('.couple-person-1').selectOption('Edith');
+    await secondCoupleRow.locator('.couple-person-2').selectOption('Frank');
+
+    // Verify couples are in localStorage
+    let couplesData = await page.evaluate(() => localStorage.getItem('couples'));
+    expect(couplesData).toBeTruthy();
+    let couples = JSON.parse(couplesData);
+    expect(couples).toHaveLength(2);
+
+    // Click Start Over
+    await page.getByRole('button', { name: /start over/i }).click();
+
+    // Confirm the modal
+    await page.getByRole('button', { name: /yes.*start over/i }).click();
+
+    // Should return to welcome page, then start a new draw
+    await page.getByRole('button', { name: /start draw/i }).click();
+
+    // Enter different names (Alice and Bob still exist, but Edith and Frank are gone)
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie\nDave');
+    await page.getByRole('button', { name: /next/i }).click();
+
+    // Expand couples section
+    await page.getByText(/quick setup.*couples/i).click();
+
+    // Verify couples were cleared from localStorage
+    couplesData = await page.evaluate(() => localStorage.getItem('couples'));
+    expect(couplesData).toBeNull();
+
+    // Verify no couple rows are visible
+    const coupleRows = page.locator('.couple-row');
+    await expect(coupleRows).toHaveCount(0);
+  });
 });

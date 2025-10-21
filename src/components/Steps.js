@@ -116,6 +116,7 @@ export function Steps() {
     localStorage.removeItem('drawName');
     localStorage.removeItem('appliedCouplesCount');
     localStorage.removeItem('lastAnimatedResults');
+    localStorage.removeItem('couples');
 
     // Reset all state
     setShowWelcome(true);
