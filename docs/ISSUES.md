@@ -32,10 +32,12 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     somewhere else on the sign where it can be more prominent. 🔄 REQUESTING
     RE-REVIEW - separated icon from title text and positioned prominently on
     left side of header at 4rem (64px) size, easily identifiable with drop shadow
-7. The import button and surrouding element are in a weird position. The
+7. ✅ DONE - The import button and surrouding element are in a weird position. The
     surrounding element bumps right up into the "start draw" button. Since the
     two options are to start a new draw or import one, they can be side-by-side
-    with explanatory text below.
+    with explanatory text below. 🔄 REQUESTING RE-REVIEW - restructured buttons
+    to display side-by-side with START DRAW (green, prominent) and IMPORT DRAW
+    (crimson, secondary) each with explanatory text below, responsive mobile layout
 8. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
