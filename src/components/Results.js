@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
+import { NotificationModal } from './NotificationModal';
 
 export function Results({ drawName, setDrawName, names, exclusions, results, setResults }) {
   const [animationSpeed, setAnimationSpeed] = useState(2); // seconds per reveal
   const [visibleResults, setVisibleResults] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
+  const [notification, setNotification] = useState({ isOpen: false, title: '', message: '' });
 
   // Load animation speed from localStorage
   useEffect(() => {
@@ -177,7 +179,11 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
       const drawResults = runNameDraw();
       setResults(drawResults);
     } catch (error) {
-      alert(error.message);
+      setNotification({
+        isOpen: true,
+        title: 'Draw Failed',
+        message: error.message,
+      });
     }
   };
 
@@ -188,7 +194,11 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
 
     /* istanbul ignore next */
     navigator.clipboard.writeText(resultsText).then(() => {
-      alert('Results copied to clipboard!');
+      setNotification({
+        isOpen: true,
+        title: 'Success',
+        message: 'Results copied to clipboard!',
+      });
     });
   };
 
@@ -446,7 +456,11 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
       } catch (error) {
         // User cancelled or share failed
         if (error.name !== 'AbortError') {
-          alert('Sharing failed. The PNG has been downloaded instead.');
+          setNotification({
+            isOpen: true,
+            title: 'Share Failed',
+            message: 'Sharing failed. The PNG has been downloaded instead.',
+          });
           // Fallback to download
           /* istanbul ignore next */
           const url = URL.createObjectURL(blob);
@@ -464,9 +478,11 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
       }
     } else {
       // Fallback: download the PNG for desktop browsers or browsers that don't support file sharing
-      alert(
-        "Your browser doesn't support image sharing. Downloading PNG instead."
-      );
+      setNotification({
+        isOpen: true,
+        title: 'Sharing Not Supported',
+        message: "Your browser doesn't support image sharing. Downloading PNG instead.",
+      });
       /* istanbul ignore next */
       const url = URL.createObjectURL(blob);
       /* istanbul ignore next */
@@ -713,6 +729,12 @@ export function Results({ drawName, setDrawName, names, exclusions, results, set
           </p>
         </div>
       )}
+      <NotificationModal
+        isOpen={notification.isOpen}
+        onClose={() => setNotification({ isOpen: false, title: '', message: '' })}
+        title={notification.title}
+        message={notification.message}
+      />
     </>
   );
 }

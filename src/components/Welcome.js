@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { NotificationModal } from './NotificationModal';
+
 export function Welcome({
   onStart,
   setNames,
@@ -5,6 +8,7 @@ export function Welcome({
   setExclusions,
   setResults,
 }) {
+  const [notification, setNotification] = useState({ isOpen: false, title: '', message: '' });
   const handleImport = e => {
     const file = e.target.files[0];
     /* istanbul ignore next */
@@ -17,7 +21,11 @@ export function Welcome({
 
         // Validate required fields
         if (!data.names || !Array.isArray(data.names)) {
-          alert('Invalid draw file: missing names array');
+          setNotification({
+            isOpen: true,
+            title: 'Invalid File',
+            message: 'Invalid draw file: missing names array',
+          });
           return;
         }
 
@@ -59,12 +67,18 @@ export function Welcome({
         // Mark welcome as seen and start the draw
         localStorage.setItem('hasSeenWelcome', 'true');
 
-        alert(
-          'Draw imported successfully! Previous matches have been added as exclusions.'
-        );
+        setNotification({
+          isOpen: true,
+          title: 'Success',
+          message: 'Draw imported successfully! Previous matches have been added as exclusions.',
+        });
         onStart();
       } catch (error) {
-        alert('Invalid draw file: ' + error.message);
+        setNotification({
+          isOpen: true,
+          title: 'Import Failed',
+          message: 'Invalid draw file: ' + error.message,
+        });
       }
     };
 
@@ -73,7 +87,8 @@ export function Welcome({
   };
 
   return (
-    <div className="welcome-container">
+    <>
+      <div className="welcome-container">
       <div className="welcome-content">
         <p className="welcome-intro">
           Step right up to the most extraordinary name-drawing apparatus ever
@@ -140,6 +155,13 @@ export function Welcome({
           </p>
         </div>
       </div>
-    </div>
+      </div>
+      <NotificationModal
+        isOpen={notification.isOpen}
+        onClose={() => setNotification({ isOpen: false, title: '', message: '' })}
+        title={notification.title}
+        message={notification.message}
+      />
+    </>
   );
 }

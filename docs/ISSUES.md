@@ -51,10 +51,10 @@ anything in docs/ out of date then update it.
 10. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
-11. All javascript alerts should be modals instead.
-12. Since "start over" is a destructive action, we should ask the user for
-    confirmation in a modal. We should explain that they will lose the data they
-    have entered.
+11. ✅ DONE - All javascript alerts should be modals instead.
+12. ✅ DONE - Since "start over" is a destructive action, we should ask the user
+    for confirmation in a modal. We should explain that they will lose the data
+    they have entered.
 13. ✅ DONE - The draw name does not appear step 2, but it is on step 1 and 3.
     However it is formatted differently on step 3. It should be on all steps
     and be formatted the same on all of them.

@@ -3,6 +3,7 @@ import { Welcome } from './Welcome';
 import { EnterNames } from './EnterNames';
 import { SelectExclusions } from './SelectExclusions';
 import { Results } from './Results';
+import { NotificationModal } from './NotificationModal';
 
 const steps = [
   {
@@ -32,6 +33,7 @@ export function Steps() {
   const [names, setNames] = useState([]);
   const [exclusions, setExclusions] = useState({});
   const [results, setResults] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const isInitialMount = useRef(true);
 
   // Load app state from localStorage on component mount
@@ -101,6 +103,10 @@ export function Steps() {
   };
 
   const handleStartOver = () => {
+    setShowConfirmModal(true);
+  };
+
+  const confirmStartOver = () => {
     // Clear all localStorage data
     localStorage.removeItem('names');
     localStorage.removeItem('exclusions');
@@ -204,6 +210,16 @@ export function Steps() {
           Start Over
         </button>
       </div>
+      <NotificationModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        title="Start Over?"
+        message="Are you sure you want to start over? All data you have entered will be lost."
+        type="confirm"
+        onConfirm={confirmStartOver}
+        confirmText="Yes, Start Over"
+        cancelText="Cancel"
+      />
     </>
   );
 }
