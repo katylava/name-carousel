@@ -1,15 +1,6 @@
 INSTRUCTIONS: Use the `tdd-issues` skill to work through these issues.
 See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
 
-4. ✅ DONE - The corner flourishes are interesting but not very victorian. They
-   should be more embellished. We should create an SVG to use there. 🔄
-   REQUESTING RE-REVIEW - replaced ✦ character with ornate Victorian SVG
-   featuring swirling curves, decorative dots, and flourish elements
-   (120x120px, embedded as CSS data URI)  🔄 REQUESTING RE-REVIEW - replaced
-   simple L-shaped CSS border corners with ornate Victorian SVG flourishes
-   featuring swirling curves and decorative dots on all sections (draw-section,
-   results-section, couples-section, exclusions-grid) ❌ REJECTED but we should
-   abandon this one. just remove all the corner flourishes.
 6. ✅ DONE - The carousel horse icon is so small you can barely identify it. Put it
     somewhere else on the sign where it can be more prominent. 🔄 REQUESTING
     RE-REVIEW - separated icon from title text and positioned prominently on
