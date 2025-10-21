@@ -202,7 +202,10 @@ export function Steps() {
           <button onClick={handlePrevious}>&larr; Previous</button>
         )}
         {steps[currentStep].buttonText && (
-          <button onClick={handleNext}>
+          <button
+            onClick={handleNext}
+            disabled={currentStep === 0 && names.length < 3}
+          >
             {steps[currentStep].buttonText} &rarr;
           </button>
         )}

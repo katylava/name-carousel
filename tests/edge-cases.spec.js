@@ -146,6 +146,32 @@ test.describe('Edge Cases and Error Conditions', () => {
     }
   });
 
+  test('Next button is disabled with fewer than 3 names to prevent impossible draws', async ({ page }) => {
+    // Issue #14 - prevent impossible draw scenarios by requiring at least 3 names
+    await page.getByRole('button', { name: /start draw/i }).click();
+
+    const nextButton = page.getByRole('button', { name: /next/i });
+
+    // With 0 names, button should be disabled
+    await expect(nextButton).toBeDisabled();
+
+    // With 1 name, button should still be disabled
+    await page.getByPlaceholder(/enter names/i).fill('Alice');
+    await expect(nextButton).toBeDisabled();
+
+    // With 2 names, button should still be disabled
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob');
+    await expect(nextButton).toBeDisabled();
+
+    // With 3 names, button should be enabled
+    await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie');
+    await expect(nextButton).toBeEnabled();
+
+    // Should be able to click and navigate to step 2
+    await nextButton.click();
+    await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
+  });
+
   test('draw algorithm prevents bidirectional assignments', async ({ page }) => {
     // REGRESSION TEST: Issue #13 - prevent bob→dana and dana→bob
     // The bug was that algorithm didn't check if recipient.gives_to === giver.name
@@ -154,7 +180,11 @@ test.describe('Edge Cases and Error Conditions', () => {
     await page.getByRole('button', { name: /start draw/i }).click();
 
     await page.getByPlaceholder(/enter names/i).fill('Alice\nBob');
-    await page.getByRole('button', { name: /next/i }).click();
+
+    // Bypass the <3 names Next button restriction by clicking step 2 directly
+    // (step indicator allows navigation with names.length > 0)
+    const step2 = page.locator('.steps-list li').nth(1);
+    await step2.click();
     await page.getByRole('button', { name: /draw/i }).click();
     await page.getByLabel(/animation speed/i).fill('0');
 
