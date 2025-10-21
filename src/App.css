@@ -1807,27 +1807,28 @@ button:active {
 
 .notification-ok,
 .notification-confirm {
-  background-color: var(--circus-crimson);
-  color: var(--color-cream);
+  background: linear-gradient(180deg, var(--circus-crimson) 0%, var(--circus-burgundy) 100%);
+  color: var(--text-light);
   border-color: var(--circus-burgundy);
 }
 
 .notification-ok:hover,
 .notification-confirm:hover {
-  background-color: var(--circus-burgundy);
+  background: linear-gradient(180deg, var(--circus-burgundy) 0%, #5c0a0a 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .notification-cancel {
-  background-color: var(--color-cream);
-  color: var(--circus-crimson);
-  border-color: var(--circus-crimson);
+  background: linear-gradient(180deg, var(--teal-performer) 0%, #4a8a8c 100%);
+  color: var(--text-light);
+  border-color: var(--soldier-green);
 }
 
 .notification-cancel:hover {
-  background-color: rgba(178, 34, 34, 0.1);
+  background: linear-gradient(180deg, #4a8a8c 0%, #3a6a6c 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes slideDown {
