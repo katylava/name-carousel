@@ -11,11 +11,11 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     shown in the count (the "N couples configured" text), but when you expand it
     the rows of form fields for those couples are not displayed, so cannot be
     removed.
-11. Start over modal buttons have low contrast, can't read text well. Use
+11. ✅ DONE - Start over modal buttons have low contrast, can't read text well. Use
     colors we use on other buttons.
-12. The PNG does not display the results in carousel order like the web page
+12. ✅ DONE - The PNG does not display the results in carousel order like the web page
     does.
-13. MAJOR BUG: I got results like this:
+13. ✅ DONE - MAJOR BUG: I got results like this:
     alice → charlie
     bob → dana
     charlie → evan
@@ -24,3 +24,7 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     fran → alice
     --
     Notice bob->dana and dana->bob. This is strictly not allowed to happen!
+14. Disable the Next button on step 1 (Enter Names) if fewer than 3 names have
+    been entered. This will prevent impossible draw scenarios. Note: We need a
+    way to bypass this restriction in the test environment since we have a test
+    that uses 2 participants to verify bidirectional assignment prevention.
