@@ -4,6 +4,7 @@ import { generateCarouselName } from '../utils/carouselNameGenerator';
 export function EnterNames({ names, setNames, drawName, setDrawName }) {
   const [textareaValue, setTextareaValue] = useState('');
   const [isEditingName, setIsEditingName] = useState(false);
+  const [duplicateName, setDuplicateName] = useState(null);
 
   // Initialize draw name with random circus name if not set
   useEffect(() => {
@@ -35,6 +36,20 @@ export function EnterNames({ names, setNames, drawName, setDrawName }) {
 
     // Only update the names array for processing, but keep the raw textarea value
     const namesList = newValue.split('\n').filter(name => name.trim());
+
+    // Check for duplicates
+    const nameCounts = {};
+    let foundDuplicate = null;
+
+    for (const name of namesList) {
+      if (nameCounts[name]) {
+        foundDuplicate = name;
+        break;
+      }
+      nameCounts[name] = 1;
+    }
+
+    setDuplicateName(foundDuplicate);
     setNames(namesList);
     localStorage.setItem('names', newValue);
   };
@@ -95,13 +110,18 @@ export function EnterNames({ names, setNames, drawName, setDrawName }) {
           (one per line)
         </span>
       </h2>
+      {duplicateName && (
+        <div className="duplicate-name-error">
+          Duplicate name detected: {duplicateName}
+        </div>
+      )}
       <textarea
         id="names"
         placeholder="Enter names here, one per line"
         rows="20"
         value={textareaValue}
         onChange={handleNamesChange}
-        className="names-textarea"
+        className={`names-textarea${duplicateName ? ' error' : ''}`}
       />
     </>
   );

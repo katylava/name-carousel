@@ -991,4 +991,26 @@ test.describe('Edge Cases and Error Conditions', () => {
     const exclusions = await page.evaluate(() => localStorage.getItem('exclusions'));
     expect(exclusions).toBeNull();
   });
+
+  test('warns when duplicate names are entered', async ({ page }) => {
+    // Start draw
+    await page.getByRole('button', { name: /start draw/i }).click();
+
+    // Enter names with duplicates
+    const textarea = page.getByPlaceholder(/enter names/i);
+    await textarea.fill('Alice\nBob\nAlice');
+
+    // Error message should appear above the text box
+    const errorMessage = page.locator('.duplicate-name-error');
+    await expect(errorMessage).toBeVisible();
+    await expect(errorMessage).toContainText('Duplicate name detected: Alice');
+
+    // Textarea should have error class applied
+    await expect(textarea).toHaveClass(/error/);
+
+    // Fix the duplicate - error should disappear
+    await textarea.fill('Alice\nBob\nCharlie');
+    await expect(errorMessage).not.toBeVisible();
+    await expect(textarea).not.toHaveClass(/error/);
+  });
 });
