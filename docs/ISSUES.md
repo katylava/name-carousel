@@ -14,7 +14,9 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
    It should have more contrast with the background. 🔄 REQUESTING RE-REVIEW -
    changed header gradient to warmer tan tones (#f5e6d3 to #ead5bd) for better
    contrast against cream page background ❌ REJECTED it's still very very
-   light. also needs some texture.
+   light. also needs some texture. 🔄 REQUESTING RE-REVIEW - updated to richer
+   golden/amber gradient (#d4a574 to #c89858) with much better contrast, added
+   subtle diagonal stripe texture pattern for vintage sign appearance
 4. ✅ DONE - The corner flourishes are interesting but not very victorian. They
    should be more embellished. We should create an SVG to use there. 🔄
    REQUESTING RE-REVIEW - replaced ✦ character with ornate Victorian SVG
