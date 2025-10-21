@@ -24,7 +24,7 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
     fran → alice
     --
     Notice bob->dana and dana->bob. This is strictly not allowed to happen!
-14. Disable the Next button on step 1 (Enter Names) if fewer than 3 names have
+14. ✅ DONE - Disable the Next button on step 1 (Enter Names) if fewer than 3 names have
     been entered. This will prevent impossible draw scenarios. Note: We need a
     way to bypass this restriction in the test environment since we have a test
     that uses 2 participants to verify bidirectional assignment prevention.
