@@ -37,21 +37,44 @@ export function EnterNames({ names, setNames, drawName, setDrawName }) {
     // Only update the names array for processing, but keep the raw textarea value
     const namesList = newValue.split('\n').filter(name => name.trim());
 
-    // Check for duplicates
-    const nameCounts = {};
-    let foundDuplicate = null;
+    // Only check for duplicates if error is already showing (to allow clearing it)
+    if (duplicateName) {
+      const nameCounts = {};
+      let foundDuplicate = null;
 
-    for (const name of namesList) {
-      if (nameCounts[name]) {
-        foundDuplicate = name;
-        break;
+      for (const name of namesList) {
+        if (nameCounts[name]) {
+          foundDuplicate = name;
+          break;
+        }
+        nameCounts[name] = 1;
       }
-      nameCounts[name] = 1;
+
+      setDuplicateName(foundDuplicate);
     }
 
-    setDuplicateName(foundDuplicate);
     setNames(namesList);
     localStorage.setItem('names', newValue);
+  };
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter') {
+      // Check for duplicates when Enter is pressed
+      const namesList = textareaValue.split('\n').filter(name => name.trim());
+
+      const nameCounts = {};
+      let foundDuplicate = null;
+
+      for (const name of namesList) {
+        if (nameCounts[name]) {
+          foundDuplicate = name;
+          break;
+        }
+        nameCounts[name] = 1;
+      }
+
+      setDuplicateName(foundDuplicate);
+    }
   };
 
   const handleDrawNameChange = e => {
@@ -121,6 +144,7 @@ export function EnterNames({ names, setNames, drawName, setDrawName }) {
         rows="20"
         value={textareaValue}
         onChange={handleNamesChange}
+        onKeyDown={handleKeyDown}
         className={`names-textarea${duplicateName ? ' error' : ''}`}
       />
     </>

@@ -998,18 +998,43 @@ test.describe('Edge Cases and Error Conditions', () => {
 
     // Enter names with duplicates
     const textarea = page.getByPlaceholder(/enter names/i);
-    await textarea.fill('Alice\nBob\nAlice');
-
-    // Error message should appear above the text box
     const errorMessage = page.locator('.duplicate-name-error');
+
+    // Type first name and press Enter
+    await textarea.fill('Alice');
+    await textarea.press('Enter');
+
+    // Type second name and press Enter
+    await textarea.pressSequentially('Bob');
+    await textarea.press('Enter');
+
+    // Start typing duplicate name - error should NOT appear yet
+    await textarea.pressSequentially('Ali');
+    await expect(errorMessage).not.toBeVisible();
+    await expect(textarea).not.toHaveClass(/error/);
+
+    // Complete the duplicate name but don't press Enter yet
+    await textarea.pressSequentially('ce');
+    await expect(errorMessage).not.toBeVisible();
+    await expect(textarea).not.toHaveClass(/error/);
+
+    // Press Enter - NOW the error should appear
+    await textarea.press('Enter');
     await expect(errorMessage).toBeVisible();
     await expect(errorMessage).toContainText('Duplicate name detected: Alice');
-
-    // Textarea should have error class applied
     await expect(textarea).toHaveClass(/error/);
 
-    // Fix the duplicate - error should disappear
-    await textarea.fill('Alice\nBob\nCharlie');
+    // Navigate back and fix the duplicate by changing it
+    await textarea.press('Backspace'); // Remove the newline
+    await textarea.press('Backspace'); // Remove 'e'
+    await textarea.press('Backspace'); // Remove 'c'
+    await textarea.press('Backspace'); // Remove 'i'
+    await textarea.press('Backspace'); // Remove 'l'
+    await textarea.press('Backspace'); // Remove 'A'
+    await textarea.pressSequentially('Charlie');
+    await textarea.press('Enter');
+
+    // Error should disappear
     await expect(errorMessage).not.toBeVisible();
     await expect(textarea).not.toHaveClass(/error/);
   });
