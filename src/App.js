@@ -9,8 +9,9 @@ function App() {
   return (
     <div className="App">
       <header>
+        <div className="carousel-icon">🎠</div>
         <h1>
-          <div className="title-line-1">🎠 Professor Putterwump's</div>
+          <div className="title-line-1">Professor Putterwump's</div>
           <div className="title-line-2">CURIOUS CAROUSEL</div>
           <div className="title-line-3">OF UNRETURNED NAMES</div>
         </h1>

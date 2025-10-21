@@ -275,6 +275,15 @@ header::before {
   border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 }
 
+/* Prominent carousel horse icon */
+.carousel-icon {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  font-size: 4rem;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
 /* Decorative circus emojis */
 header::after {
   content: '🎪 🎭 🎩';
