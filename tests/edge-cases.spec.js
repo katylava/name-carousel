@@ -894,12 +894,12 @@ test.describe('Edge Cases and Error Conditions', () => {
     await page.getByPlaceholder(/enter names/i).fill('Alice\nBob\nCharlie');
     await page.getByRole('button', { name: /next/i }).click();
 
-    // Test editing draw name on step 2 (SelectExclusions)
+    // Test editing draw name on step 2 (SelectExclusions) with Enter
     await expect(page.getByRole('heading', { name: /select exclusions/i })).toBeVisible();
     await expect(drawNameTitle).toBeVisible();
     await expect(drawNameTitle).toHaveText(initialDrawName);
 
-    // Edit draw name on step 2
+    // Edit draw name on step 2 using Enter
     await page.locator('.carousel-name-display').click();
     const drawNameInput = page.locator('.carousel-name-input');
     await expect(drawNameInput).toBeVisible();
@@ -911,12 +911,18 @@ test.describe('Edge Cases and Error Conditions', () => {
     let savedDrawName = await page.evaluate(() => localStorage.getItem('drawName'));
     expect(savedDrawName).toBe('Step 2 Test Name');
 
+    // Test editing draw name on step 2 using blur
+    await page.locator('.carousel-name-display').click();
+    await drawNameInput.fill('Step 2 Blur Test');
+    await page.getByRole('heading', { name: /select exclusions/i }).click(); // Click elsewhere to blur
+    await expect(drawNameTitle).toHaveText('Step 2 Blur Test');
+
     // Navigate to step 3
     await page.getByRole('button', { name: /draw/i }).click();
 
-    // Test editing draw name on step 3 (Results)
+    // Test editing draw name on step 3 (Results) using blur
     await expect(drawNameTitle).toBeVisible();
-    await expect(drawNameTitle).toHaveText('Step 2 Test Name');
+    await expect(drawNameTitle).toHaveText('Step 2 Blur Test');
 
     // Edit draw name on step 3 using blur
     await page.locator('.carousel-name-display').click();
@@ -928,11 +934,17 @@ test.describe('Edge Cases and Error Conditions', () => {
     savedDrawName = await page.evaluate(() => localStorage.getItem('drawName'));
     expect(savedDrawName).toBe('Step 3 Test Name');
 
+    // Test editing draw name on step 3 using Enter
+    await page.locator('.carousel-name-display').click();
+    await drawNameInput.fill('Step 3 Enter Test');
+    await drawNameInput.press('Enter');
+    await expect(drawNameTitle).toHaveText('Step 3 Enter Test');
+
     // Perform a draw and verify draw name still appears correctly
     await page.getByLabel(/animation speed/i).fill('0');
     await page.getByRole('button', { name: /🎲 draw names/i }).click();
     await expect(page.locator('.result-item').first()).toBeVisible();
-    await expect(drawNameTitle).toHaveText('Step 3 Test Name');
+    await expect(drawNameTitle).toHaveText('Step 3 Enter Test');
   });
 
   test('Start Over button shows confirmation modal', async ({ page }) => {
