@@ -12,8 +12,9 @@ See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
 3. ✅ DONE - The "ticket stub" design of the steps is not coming through. They
    do not look like ticket stubs at all. The design is good, so if we can't
    think of a way to make them look like ticket stubs then just extend the
-   "perforation" effect to the width of the box. ❌ REJECTED - nothing has
-   changed this is not done
+   "perforation" effect to the width of the box. 🔄 REQUESTING RE-REVIEW -
+   extended perforation effect from 30% width to full width (left: 0, right:
+   0) across all step boxes
 4. The corner flourishes are interesting but not very victorian. They should be
    more embellished. We should create an SVG to use there.
 5. The draw page buttons still need some re-arranging. The draw again button
