@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 
-export function Results({ drawName, names, exclusions, results, setResults }) {
+export function Results({ drawName, setDrawName, names, exclusions, results, setResults }) {
   const [animationSpeed, setAnimationSpeed] = useState(2); // seconds per reveal
   const [visibleResults, setVisibleResults] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
 
   // Load animation speed from localStorage
   useEffect(() => {
@@ -540,9 +541,47 @@ export function Results({ drawName, names, exclusions, results, setResults }) {
     }, duration / 2);
   };
 
+  const handleDrawNameChange = e => {
+    const newName = e.target.value;
+    setDrawName(newName);
+    localStorage.setItem('drawName', newName);
+  };
+
+  const handleNameClick = () => {
+    setIsEditingName(true);
+  };
+
+  const handleNameBlur = () => {
+    setIsEditingName(false);
+  };
+
+  const handleNameKeyDown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setIsEditingName(false);
+    }
+  };
+
   return (
     <>
-      <h2>{drawName}</h2>
+      <div className="carousel-name-section">
+        {isEditingName ? (
+          <input
+            type="text"
+            value={drawName}
+            onChange={handleDrawNameChange}
+            onBlur={handleNameBlur}
+            onKeyDown={handleNameKeyDown}
+            className="carousel-name-input"
+            autoFocus
+          />
+        ) : (
+          <div className="carousel-name-display" onClick={handleNameClick}>
+            <h3 className="carousel-name-title">{drawName}</h3>
+            <span className="edit-icon">✏️</span>
+          </div>
+        )}
+      </div>
 
       {results.length === 0 ? (
         <div className="draw-section">

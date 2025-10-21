@@ -10,6 +10,7 @@ export function SelectExclusions({
   const [couples, setCouples] = useState([]);
   const [couplesExpanded, setCouplesExpanded] = useState(false);
   const [appliedCouplesCount, setAppliedCouplesCount] = useState(0);
+  const [isEditingName, setIsEditingName] = useState(false);
 
   // Load exclusions from localStorage on component mount
   useEffect(() => {
@@ -94,8 +95,48 @@ export function SelectExclusions({
     return summary;
   };
 
+  const handleDrawNameChange = e => {
+    const newName = e.target.value;
+    setDrawName(newName);
+    localStorage.setItem('drawName', newName);
+  };
+
+  const handleNameClick = () => {
+    setIsEditingName(true);
+  };
+
+  const handleNameBlur = () => {
+    setIsEditingName(false);
+  };
+
+  const handleNameKeyDown = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      setIsEditingName(false);
+    }
+  };
+
   return (
     <>
+      <div className="carousel-name-section">
+        {isEditingName ? (
+          <input
+            type="text"
+            value={drawName}
+            onChange={handleDrawNameChange}
+            onBlur={handleNameBlur}
+            onKeyDown={handleNameKeyDown}
+            className="carousel-name-input"
+            autoFocus
+          />
+        ) : (
+          <div className="carousel-name-display" onClick={handleNameClick}>
+            <h3 className="carousel-name-title">{drawName}</h3>
+            <span className="edit-icon">✏️</span>
+          </div>
+        )}
+      </div>
+
       <h2>Select exclusions</h2>
       <p>Choose who cannot be matched with whom</p>
 

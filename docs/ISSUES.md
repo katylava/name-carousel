@@ -47,7 +47,7 @@ anything in docs/ out of date then update it.
 9. ✅ DONE - There is still a lot of padding (or line height?) between
     checkboxes in the exclusions grid. 🔄 REQUESTING RE-REVIEW - reduced gap
     to 0.15rem, line-height: 1.0, and checkbox padding to 0.15rem 0.3rem,
-    tested with 15 participants
+    tested with 15 participants 👍 APPROVED
 10. Warn the user if they enter the same name twice. The text box should turn
     pink with a red border indicating error (after they press enter on a
     duplicate name). The error message should appear above the text box.
@@ -55,9 +55,11 @@ anything in docs/ out of date then update it.
 12. Since "start over" is a destructive action, we should ask the user for
     confirmation in a modal. We should explain that they will lose the data they
     have entered.
-13. The draw name does not appear step 2, but it is on step 1 and 3. However it
-    is formatted differently on step 3. It should be on all steps and be
-    formatted the same on all of them.
+13. ✅ DONE - The draw name does not appear step 2, but it is on step 1 and 3.
+    However it is formatted differently on step 3. It should be on all steps
+    and be formatted the same on all of them. 🔄 REQUESTING RE-REVIEW - added
+    draw name to step 2 and made format consistent across all steps (h3 with
+    edit icon)
 14. apply couple UI. if you hit apply couple twice, the second time it removes
     them. seems like we don't really need so many buttons then. we can replace
     apply couple with remove after they are applied.
