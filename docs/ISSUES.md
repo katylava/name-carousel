@@ -1,8 +1,9 @@
 INSTRUCTIONS: Use the `tdd-issues` skill to work through these issues.
 See .claude/skills/tdd-issues.md for the complete TDD workflow and requirements.
 
-1. ✅ DONE - The help modal icon covers up part of the app title ❌ REJECTED -
-   it is now in the page margin
+1. ✅ DONE - The help modal icon covers up part of the app title 🔄
+   REQUESTING RE-REVIEW - moved to top-left corner inside header box (left:
+   20px, top: 20px), balancing circus emojis in top-right
 2. ✅ DONE - The app title still doesn't look much like a sign since its
    background blends in with the page background (same color just no stripes).
    It should have more contrast with the background. ❌ REJECTED - it is still
