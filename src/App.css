@@ -393,9 +393,8 @@ h3 {
   content: '';
   position: absolute;
   top: -3px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30%;
+  left: 0;
+  right: 0;
   height: 6px;
   background: repeating-linear-gradient(
     90deg,
